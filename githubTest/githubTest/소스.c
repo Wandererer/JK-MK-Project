@@ -8,6 +8,10 @@ int main()
 	//아래에 추가하시오
 
 	printf("커밋 취소하기");
+
+
+	printf("????");
+	printf("difference");
 	return 0;
 
 }

@@ -75,7 +75,7 @@ public class JointOrientation : MonoBehaviour
 			//This direction is calculated and explained below. When this reference is taken, the joint will be rotated about its forward axis such that it faces upwards when
 			// the roll value matches the reference.
 			Vector3 referenceZeroRoll = computeZeroRollVector (myo.transform.forward);
-			Debug.Log(referenceZeroRoll+"  referencezero");
+			//Debug.Log(referenceZeroRoll+"  referencezero");
 			_referenceRoll = rollFromZero (referenceZeroRoll, myo.transform.forward, myo.transform.up);
 		}
 
@@ -87,10 +87,17 @@ public class JointOrientation : MonoBehaviour
 		
 		// The relative roll is simply how much the current roll has changed relative to the reference roll. //relativeRoll 은 각도가 얼마나 바뀌었는지만 파악
 		// adjustAngle simply keeps the resultant value within -180 to 180 degrees.
+       // Debug.Log(roll + "  roll");
+        Debug.Log(_referenceRoll + "_referenceRoll"); //위치새로고침 했을당시의 각도값을 가져와서 
 		float relativeRoll = normalizeAngle (roll - _referenceRoll); //현재 각도가 얼마나 바뀌었는지 확인
-		
-		// antiRoll represents a rotation about the myo Armband's forward axis adjusting for reference roll.
-		Quaternion antiRoll = Quaternion.AngleAxis (relativeRoll, myo.transform.forward);
+
+
+       // Debug.Log(relativeRoll + " relativeRoll");
+	
+        // antiRoll represents a rotation about the myo Armband's forward axis adjusting for reference roll.
+		Quaternion antiRoll = Quaternion.AngleAxis (relativeRoll, myo.transform.forward); //forward 방향에서  relativeroll만큼의 각을 쿼터니언값으로 만들어줌
+
+        Debug.Log(antiRoll + " antiRoll");
 		
 		// Here the anti-roll and yaw rotations are applied to the myo Armband's forward direction to yield
 		// the orientation of the joint.
@@ -121,9 +128,9 @@ public class JointOrientation : MonoBehaviour
 		// but we need to determine separately whether the Myo has been rolled clockwise or counterclockwise.
 		float cosine = Vector3.Dot (up, zeroRoll); //내적값 구함 
 		//zerorolll이 구한 값은 이 환경에서의 처음시작시 위쪽의 값을 받아온다. 그값이랑 아예 위쪽을 내적한다
-		//ㄱㅣㄹㅇㅣㄱㅏㅂㅅ
+		//길이값
 
-		Debug.Log (cosine + "cosine");
+		//Debug.Log (cosine + "cosine");
 
 		
 		// To determine the sign of the roll, we take the cross product of the up vector and the zero
@@ -132,25 +139,29 @@ public class JointOrientation : MonoBehaviour
 		// Thus the sign of the dot product of forward and it yields the sign of our roll value.
 		Vector3 cp = Vector3.Cross (up, zeroRoll);
 
+       // Debug.Log(cp + "cp");
+
 		float directionCosine = Vector3.Dot (forward, cp);
-		float sign = directionCosine < 0.0f ? 1.0f : -1.0f; //ㅂㅗㄴㅡㄴ ㅂㅏㅇㅎㅑㅇ 
+		float sign = directionCosine < 0.0f ? 1.0f : -1.0f; //왼쪽 방향인지 오른쪽인지 왼쪽이 1 오른쪽이 -1
 
-
+       // Debug.Log(sign + " sign");
+       // Debug.Log(sign * Mathf.Rad2Deg * Mathf.Acos (cosine) + " ??");
+      //  Debug.Log(Mathf.Acos(cosine) + " Mathf.Acos (cosine) "); //코사인 역함수
 
 		// Return the angle of roll (in degrees) from the cosine and the sign. 
-		//코사인과 사인값의 리턴 ㅎㅏㄱㅗ ㅂㅏㅇㅎㅑㅇㅇㅡㄹ ㅈㅓㅇㅎㅐㅈㅜㅁ
+		//코사인과 위치값의 리턴 하고방향을 정해줌
 		return sign * Mathf.Rad2Deg * Mathf.Acos (cosine);
 	}
 	
 	// Compute a vector that points perpendicular to the forward direction, forward 방향의 직각을 구함
 	// minimizing angular distance from world up (positive Y axis).  // 위쪽을 바라보는 각을 최소 화함
 	// This represents the direction of no rotation about its forward axis. // forwaRD각도는 회전이 없음
-	Vector3 computeZeroRollVector (Vector3 forward)//두 백터를 외적을 해도 결국 마이오의 위방향의 외적값을 구하게됨
+	Vector3 computeZeroRollVector (Vector3 forward)//두 백터를 외적을 해도 결국 마이오의 위방향의 외적값을 구하게됨 처음 시작시 위방향을 계산해서 바꿔줌
 	{
-		//ㅈㅏㄱㅣ ㅇㅜㅓㄴㄹㅐ ㅇㅜㅣㅊㅣㅇㅡㅣ ㅂㅐㄱㅌㅓㄹㅡㄹ ㅇㅜㅣㄹㅗ ㅎㅑㅇㅎㅏㄹㅅㅜ ㅇㅣㅆㄱㅔ
+		//자기 원래 위치의 백터를 위로 향할수있게
 
 		Vector3 antigravity = Vector3.up;
-		Debug.Log (antigravity + " anti");
+		//Debug.Log (antigravity + " anti");
 		Vector3 m = Vector3.Cross (myo.transform.forward, antigravity);//외적값 구함  myo.transform.forward ( 회전 좌우)랑 위로 향하는 것이랑 외적값을 구함 처음 이값 -1 , 0 , 0
 		Vector3 roll = Vector3.Cross (m, myo.transform.forward); //외적값 구함  //처음 이값 다시 위 방향가리킴
 		

@@ -13,9 +13,13 @@ public class test3 : MonoBehaviour {
     Transform thisTransfrom=null;
     float x, y, z;
 
+	float firerate=0.1f;
+
     private static float Q = 0.000001f;
     private static float R = 0.01f;
     private static float P = 1, X = 0, K;
+
+	public GameObject missile;
 
 
 
@@ -39,21 +43,27 @@ public class test3 : MonoBehaviour {
         
         
         
-        float newX = Mathf.Round(newTest(thalmicMyo.gyroscope.x));
-      float newY = Mathf.Round(newTest(thalmicMyo.gyroscope.y));
+       // float newX = Mathf.Round(newTest(thalmicMyo.gyroscope.x));
+     // float newY = Mathf.Round(newTest(thalmicMyo.gyroscope.y));
 
    
 
-      newX *= 0.01f;
-      newY *= 0.01f;
+      //newX *= 0.01f;
+      //newY *= 0.01f;
 
-       // float newX =thalmicMyo.gyroscope.x;
-       // float newY=thalmicMyo.gyroscope.y;
+        float newX =thalmicMyo.gyroscope.x;
+        float newY=thalmicMyo.gyroscope.y;
+
+		
+		newX *= 0.05f;
+
+		newY *= 0.05f;
+
       // Debug.Log(thalmicMyo.gyroscope + " dd  ");
       // Debug.Log(newX + "   " + newY);
-       // Debug.Log(thalmicMyo.gyroscope.x +"   "+thalmicMyo.gyroscope.y);
+        Debug.Log(thalmicMyo.gyroscope.x +"   "+thalmicMyo.gyroscope.y);
 
-       Debug.Log(thalmicMyo.accelerometer.x);
+     //  Debug.Log(thalmicMyo.accelerometer.x);
 
        // this.gameObject.GetComponent<Transform>().position = (thalmicMyo.gyroscope/10);
  
@@ -62,8 +72,20 @@ public class test3 : MonoBehaviour {
          z = this.gameObject.GetComponent<Transform>().position.z;
          y = this.gameObject.GetComponent<Transform>().position.y;
 
+		firerate -= Time.deltaTime;
 
-         this.gameObject.GetComponent<Transform>().position = new Vector3(x += newX, y += newY, 0);
+         this.gameObject.GetComponent<Transform>().position = new Vector3(x += ((int)newY)*-1, y += (int)newX, 0);
+
+		if (thalmicMyo.pose == Pose.Fist) {
+			if(firerate<=0)
+			{
+			GameObject test=Instantiate(missile);
+			test.GetComponent<Transform>().position=new Vector3(x,y,1);
+				firerate=0.1f;
+			}
+
+		}
+
 
        // myoX = myo.transform.rotation.x*10;
         //Debug.Log(myoX);

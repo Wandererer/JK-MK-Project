@@ -60,6 +60,7 @@
      <Compile Include="Assets\Myo\Scripts\ThalmicMyo.cs" />
      <Compile Include="Assets\Particle\Fx Explosion Pack\Script\DestroyEffect.cs" />
      <Compile Include="Assets\Particle\Fx Explosion Pack\Script\csLightControl.cs" />
+     <Compile Include="Assets\Scripts\BombExplode.cs" />
      <Compile Include="Assets\Scripts\FireMyShipMissile.cs" />
      <Compile Include="Assets\Scripts\MyShipControl.cs" />
      <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />

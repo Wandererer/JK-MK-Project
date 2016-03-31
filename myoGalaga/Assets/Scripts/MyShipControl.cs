@@ -8,8 +8,12 @@ using VibrationType = Thalmic.Myo.VibrationType;
 
 public class MyShipControl : MonoBehaviour {
 	public GameObject myo = null;
+	public GameObject bomb=null;
 	
 	float plainLocalX, plainLocalY;
+	float plainTransform;
+	float plainRotationX=270,plainRotationY=0,plainRotationZ=0;
+	float plainQuaternionX,plainQuaternionY,plainQuaternionZ;
 	float transparentLocalX,transparentLocalY;
 	float limitPlainX, limitPlainY; 
 	float firerate=0.1f;
@@ -18,8 +22,15 @@ public class MyShipControl : MonoBehaviour {
 
 	float myoGryoX;
 	float myoGryoY;
+	float myoAccelX;
+	float myoAccelY;
+
+	float rotationChangeRate=10f;
+
 	public GameObject missile;
 	public GameObject transparentPlain;
+
+	int bombCount=3;
 
 	
 	// Use this for initialization
@@ -33,13 +44,20 @@ public class MyShipControl : MonoBehaviour {
 		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo>(); //myo object에 접속
 		
 		
-		
+
 		 myoGryoX =thalmicMyo.gyroscope.x;
          myoGryoY= thalmicMyo.gyroscope.y;
-		
+		myoAccelX = thalmicMyo.accelerometer.x;
+		myoAccelY= thalmicMyo.accelerometer.y;
 		//increase rate for moving spaceship
         myoGryoX *= 0.009f;
         myoGryoY *= 0.009f;
+
+
+	Debug.Log (myoGryoX*1000 + "  " + myoGryoY*1000);
+		//Debug.Log(myoAccelX +"   "+myoAccelY);
+		//Debug.Log(myoAccelX);
+
 
 		Vector3 screenPosition = Camera.main.WorldToViewportPoint (this.GetComponent<Transform> ().position); 
 		//find screen limit
@@ -47,7 +65,7 @@ public class MyShipControl : MonoBehaviour {
 			limitPlainX = screenPosition.x;
 			limitPlainY = screenPosition.y;
 		}
-		//Vector3 screenPosition=Camera.main.vi
+
 		//Debug.Log (screenPosition);
 
 		// Debug.Log(thalmicMyo.gyroscope + " dd  ");
@@ -58,10 +76,20 @@ public class MyShipControl : MonoBehaviour {
 		
 		// this.gameObject.GetComponent<Transform>().position = (thalmicMyo.gyroscope/10);
 		
-
+		//plainTransform = this.gameObject.GetComponent<Transform> ().rotation;
 		plainLocalX = this.gameObject.GetComponent<Transform>().position.x;
 		plainLocalY = this.gameObject.GetComponent<Transform>().position.y;
-		
+		plainQuaternionX = this.gameObject.GetComponent<Transform> ().rotation.x;
+	
+		plainQuaternionY = this.gameObject.GetComponent<Transform> ().rotation.y;
+		plainQuaternionZ = this.gameObject.GetComponent<Transform> ().rotation.z;
+
+		Debug.Log (plainQuaternionY + "  " + plainQuaternionZ);
+
+		//plainRotationX = this.gameObject.GetComponent<Transform> ().rotation.x;
+		//plainRotationY = this.gameObject.GetComponent<Transform> ().eulerAngles.y;
+		//plainRotationZ = this.gameObject.GetComponent<Transform> ().eulerAngles.z;
+
 		firerate -= Time.deltaTime; //how often do you want fire pistol
 
 		if (limitPlainX >= 0.1f && limitPlainX <= 0.9f && limitPlainY >= 0.1f && limitPlainY <= 0.9f)
@@ -74,6 +102,8 @@ public class MyShipControl : MonoBehaviour {
 		}
 
 
+		MovelikeRealPlain ();
+
 		//Debug.Log (this.gameObject.GetComponent<Transform> ().position);
 
 		//change transform this space ship
@@ -81,6 +111,7 @@ public class MyShipControl : MonoBehaviour {
 		if (thalmicMyo.pose == Pose.Fist) { //if your gesture is fist then fire
 			if(firerate<=0)
 			{
+				//add fire sound later
 				GameObject test=Instantiate(missile); //create missile gameobjet
 				test.GetComponent<Transform>().position=new Vector3(plainLocalX,plainLocalY,1); //create missile object in front of z+1 from this object
 				firerate=0.1f; //firerate initiallization
@@ -88,8 +119,22 @@ public class MyShipControl : MonoBehaviour {
 			
 		}
 
+		if (thalmicMyo.pose == Pose.WaveIn) {
+			CreateBomb ();
+		}
 
 
+	}
+
+	void CreateBomb()
+	{
+		GameObject obj = GameObject.Find ("Nuclear");
+		if (obj == null && bombCount>0) {
+			obj = Instantiate (bomb);
+			obj.name = "Nuclear";
+			obj.GetComponent<Transform>().position=new Vector3(plainLocalX,plainLocalY-1,0);
+			bombCount--;
+		}
 	}
 
 
@@ -124,6 +169,32 @@ public class MyShipControl : MonoBehaviour {
 			}
 
 		}
+	}
+
+	void MovelikeRealPlain()
+	{
+		if (myoGryoY * 1000 > 120) {
+			this.GetComponent<Transform> ().rotation = new Quaternion (180, plainQuaternionY += rotationChangeRate, plainQuaternionZ-= rotationChangeRate, -180);
+		} else if(myoGryoY * 1000 < -120) {
+			this.GetComponent<Transform> ().rotation = new Quaternion (180, plainQuaternionY -= rotationChangeRate, plainQuaternionZ+= rotationChangeRate, -180);
+		}
+
+
+
+		/*
+		 else{
+			this.GetComponent<Transform> ().rotation = new Quaternion (180, 0 , 0 , -180);
+		}
+
+
+if (myoGryoX * 1000 > 120) {
+			this.GetComponent<Transform> ().rotation = new Quaternion (270, 0, 0, -180);
+		} else if(myoGryoX * 1000 < -120) {
+			this.GetComponent<Transform> ().rotation = new Quaternion (90, 0, 0, -180);
+
+		}
+		 
+		 */ 
 	}
 
 }

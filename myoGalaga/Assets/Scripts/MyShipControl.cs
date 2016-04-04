@@ -20,30 +20,43 @@ public class MyShipControl : MonoBehaviour {
 
 	bool isMyControl=true; //if exceed resolution ismycontorl=false;
 
+
+
 	float myoGryoX;
 	float myoGryoY;
 	float myoAccelX;
 	float myoAccelY;
 
-	float rotationChangeRate=10f;
+	float rotationChangeRate=40f;
 
 	public GameObject missile;
 	public GameObject transparentPlain;
 
-	int bombCount=3;
+    Transform startRotation;
+    Transform destinationRotation;
 
-	
+	int bombCount=3;
+    int direction;
+
+    float tilt = 0f;
+
+    [Range(0, 180)]
+    public float angle;
+
+    float tiltZ = 0.5f;
+    float tiltY = 0.5f;
+
+    Transform test;
+
 	// Use this for initialization
 	void Start () {
 		myo = GameObject.Find ("Myo");
-	
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo>(); //myo object에 접속
-		
-		
+
 
 		 myoGryoX =thalmicMyo.gyroscope.x;
          myoGryoY= thalmicMyo.gyroscope.y;
@@ -54,7 +67,7 @@ public class MyShipControl : MonoBehaviour {
         myoGryoY *= 0.009f;
 
 
-	Debug.Log (myoGryoX*1000 + "  " + myoGryoY*1000);
+	//Debug.Log (myoGryoX*1000 + "  " + myoGryoY*1000);
 		//Debug.Log(myoAccelX +"   "+myoAccelY);
 		//Debug.Log(myoAccelX);
 
@@ -79,12 +92,19 @@ public class MyShipControl : MonoBehaviour {
 		//plainTransform = this.gameObject.GetComponent<Transform> ().rotation;
 		plainLocalX = this.gameObject.GetComponent<Transform>().position.x;
 		plainLocalY = this.gameObject.GetComponent<Transform>().position.y;
-		plainQuaternionX = this.gameObject.GetComponent<Transform> ().rotation.x;
+		
+        plainQuaternionX = this.gameObject.GetComponent<Transform> ().rotation.x;
 	
 		plainQuaternionY = this.gameObject.GetComponent<Transform> ().rotation.y;
 		plainQuaternionZ = this.gameObject.GetComponent<Transform> ().rotation.z;
 
-		Debug.Log (plainQuaternionY + "  " + plainQuaternionZ);
+     //   test = this.gameObject.GetComponent<Transform>();
+  
+
+
+	//	Debug.Log (plainQuaternionX +"  "+plainQuaternionY + "  " + plainQuaternionZ);
+       // Debug.Log(Quaternion.Euler(270, 310, 90));
+
 
 		//plainRotationX = this.gameObject.GetComponent<Transform> ().rotation.x;
 		//plainRotationY = this.gameObject.GetComponent<Transform> ().eulerAngles.y;
@@ -173,11 +193,61 @@ public class MyShipControl : MonoBehaviour {
 
 	void MovelikeRealPlain()
 	{
-		if (myoGryoY * 1000 > 120) {
-			this.GetComponent<Transform> ().rotation = new Quaternion (180, plainQuaternionY += rotationChangeRate, plainQuaternionZ-= rotationChangeRate, -180);
-		} else if(myoGryoY * 1000 < -120) {
-			this.GetComponent<Transform> ().rotation = new Quaternion (180, plainQuaternionY -= rotationChangeRate, plainQuaternionZ+= rotationChangeRate, -180);
-		}
+
+
+        if (myoGryoY * 1000 > 120)//왼쪽
+        {
+
+          //  Debug.Log(Input.GetAxis("Horizontal"));
+           // Debug.Log(Input.GetAxis("Vertical"));
+
+           
+
+         //  this.GetComponent<Transform> ().rotation = new Quaternion (180, plainQuaternionY += rotationChangeRate, plainQuaternionZ-= rotationChangeRate, -180);
+
+           // this.GetComponent<Transform>().rotation = Quaternion.Euler(test.rotation.eulerAngles.x, test.rotation.eulerAngles.y+100f*Time.deltaTime*0.5),test.rotation.eulerAngles.z);
+           // Quaternion rotation = Quaternion.Euler(180, 30, -30);
+
+
+          //  transform.Rotate(0, 0.05 * 2f * Time.deltaTime, 0, Space.World);
+            //direction=-1;
+
+            Quaternion limit = Quaternion.Euler(270, 320, 90);
+            float limitX = this.GetComponent<Transform>().rotation.eulerAngles.x;
+            float limitY = this.GetComponent<Transform>().rotation.eulerAngles.y;
+            float limitZ = this.GetComponent<Transform>().rotation.eulerAngles.z;
+            Debug.Log(this.GetComponent<Transform>().rotation.eulerAngles);
+
+            if ((limitX >= 269 && limitX < 311) &&limitY == 270 && limitZ == 90)
+            {
+
+            }
+
+             else if((limitX>=269 && limitX<311))
+                GetComponent<Transform>().Rotate((new Vector3(0, -1, 0)) * Time.deltaTime * 200f);
+           
+        
+
+        }
+
+
+        else if (myoGryoY * 1000 < -120) //오른쪽
+        {
+           // this.GetComponent<Transform> ().rotation = new Quaternion (180, plainQuaternionY -= rotationChangeRate, plainQuaternionZ+= rotationChangeRate, -180);
+            float limitX = this.GetComponent<Transform>().rotation.eulerAngles.x;
+            float limitY = this.GetComponent<Transform>().rotation.eulerAngles.y;
+            float limitZ = this.GetComponent<Transform>().rotation.eulerAngles.z;
+            Debug.Log(this.GetComponent<Transform>().rotation.eulerAngles);
+
+
+            if ((limitX >= 269 && limitX < 311)&& limitY == 90 && limitZ == 270)
+            {
+
+            }
+
+            else if ((limitX >= 269 && limitX < 311))
+            GetComponent<Transform>().Rotate((new Vector3(0, 1, 0)) * Time.deltaTime * 200f);
+        }
 
 
 

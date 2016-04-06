@@ -9,11 +9,11 @@ using VibrationType = Thalmic.Myo.VibrationType;
 public class MyShipControl : MonoBehaviour {
 	public GameObject myo = null;
 	public GameObject bomb=null;
+	public GameObject controller;
 	
 	float plainLocalX, plainLocalY;
 	float plainTransform;
-	float plainRotationX=270,plainRotationY=0,plainRotationZ=0;
-	float plainQuaternionX,plainQuaternionY,plainQuaternionZ;
+
 	float transparentLocalX,transparentLocalY;
 	float limitPlainX, limitPlainY; 
 	float firerate=0.1f;
@@ -22,10 +22,6 @@ public class MyShipControl : MonoBehaviour {
 
 	float myoGryoX;
 	float myoGryoY;
-	float myoAccelX;
-	float myoAccelY;
-
-	float rotationChangeRate=40f;
 
 	public GameObject missile;
 	public GameObject transparentPlain;
@@ -33,22 +29,19 @@ public class MyShipControl : MonoBehaviour {
     Transform startRotation;
     Transform destinationRotation;
 
-	int bombCount=3;
+	int bombCount;
     int direction;
 
-    float tilt = 0f;
-
+   
     [Range(0, 180)]
     public float angle;
-
-    float tiltZ = 0.5f;
-    float tiltY = 0.5f;
 
     Transform test;
 
 	// Use this for initialization
 	void Start () {
-		myo = GameObject.Find ("Myo");
+		//myo = GameObject.Find ("Myo");
+		bombCount=controller.GetComponent<GameController>().getBombCount();
 	}
 	
 	// Update is called once per frame
@@ -58,8 +51,6 @@ public class MyShipControl : MonoBehaviour {
 
 		 myoGryoX =thalmicMyo.gyroscope.x;
          myoGryoY= thalmicMyo.gyroscope.y;
-		myoAccelX = thalmicMyo.accelerometer.x;
-		myoAccelY= thalmicMyo.accelerometer.y;
 		//increase rate for moving spaceship
         myoGryoX *= 0.009f;
         myoGryoY *= 0.009f;
@@ -90,11 +81,6 @@ public class MyShipControl : MonoBehaviour {
 		//plainTransform = this.gameObject.GetComponent<Transform> ().rotation;
 		plainLocalX = this.gameObject.GetComponent<Transform>().position.x;
 		plainLocalY = this.gameObject.GetComponent<Transform>().position.y;
-		
-        plainQuaternionX = this.gameObject.GetComponent<Transform> ().rotation.x;
-	
-		plainQuaternionY = this.gameObject.GetComponent<Transform> ().rotation.y;
-		plainQuaternionZ = this.gameObject.GetComponent<Transform> ().rotation.z;
 
      //   test = this.gameObject.GetComponent<Transform>();
   
@@ -151,7 +137,7 @@ public class MyShipControl : MonoBehaviour {
 			obj = Instantiate (bomb);
 			obj.name = "Nuclear";
 			obj.GetComponent<Transform>().position=new Vector3(plainLocalX,plainLocalY-1,0);
-			bombCount--;
+			controller.GetComponent<GameController> ().setBombCount (bombCount--);
 		}
 	}
 

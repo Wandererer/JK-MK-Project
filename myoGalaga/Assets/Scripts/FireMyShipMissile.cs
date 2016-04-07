@@ -5,7 +5,7 @@ public class FireMyShipMissile : MonoBehaviour {
 
 
 	float fireSpeed=0.5f; //missile speed
-
+	public int firePower=1;
 
 	// Use this for initialization
 	void Start () {

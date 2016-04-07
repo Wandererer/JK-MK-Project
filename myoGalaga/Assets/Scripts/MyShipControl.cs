@@ -96,7 +96,7 @@ public class MyShipControl : MonoBehaviour {
 
 		firerate -= Time.deltaTime; //how often do you want fire pistol
 
-		if (limitPlainX >= 0.1f && limitPlainX <= 0.9f && limitPlainY >= 0.1f && limitPlainY <= 0.9f)
+		if (limitPlainX >= 0.05f && limitPlainX <= 0.95f && limitPlainY >= 0.05f && limitPlainY <= 0.95f)
 			this.gameObject.GetComponent<Transform> ().position = new Vector3 (plainLocalX += (myoGryoY) * -1, plainLocalY += myoGryoX, 0);
 		else 
 		{
@@ -161,7 +161,7 @@ public class MyShipControl : MonoBehaviour {
 			objLimitY = screenPositionTransparent.y;
 			//Debug.Log (objLimitX + "   " + objLimitY);
 
-			if (objLimitX >= 0.1f && objLimitX <= 0.9f && objLimitY >= 0.1f && objLimitY <= 0.9f) {
+			if (objLimitX >= 0.05f && objLimitX <= 0.95f && objLimitY >= 0.05f && objLimitY <= 0.95f) {
 				//Debug.Log ("범위안에 들어와");
 				plainLocalX = transparentLocalX;
 				plainLocalY = transparentLocalY;

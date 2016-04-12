@@ -30,7 +30,7 @@ public class HomigMissile : MonoBehaviour {
 		else
 			transform.position = new Vector3 (x, y, z -= 1);
 
-		if(diff<50)  {
+		if(diff<7)  {
 			isHoming = false;
 		}
 

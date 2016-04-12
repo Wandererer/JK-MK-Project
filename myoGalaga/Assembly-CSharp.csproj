@@ -61,6 +61,8 @@
      <Compile Include="Assets\Particle\Fx Explosion Pack\Script\DestroyEffect.cs" />
      <Compile Include="Assets\Particle\Fx Explosion Pack\Script\csLightControl.cs" />
      <Compile Include="Assets\Scripts\BombExplode.cs" />
+     <Compile Include="Assets\Scripts\BossMissileLauncher.cs" />
+     <Compile Include="Assets\Scripts\BossMovement.cs" />
      <Compile Include="Assets\Scripts\BossMovementAndFire.cs" />
      <Compile Include="Assets\Scripts\BossStatus.cs" />
      <Compile Include="Assets\Scripts\EnemyChoperStatus.cs" />
@@ -72,6 +74,7 @@
      <Compile Include="Assets\Scripts\SemiBossStatus.cs" />
      <Compile Include="Assets\Scripts\ShieldEffect.cs" />
      <Compile Include="Assets\Scripts\UavStatus.cs" />
+     <Compile Include="Assets\Scripts\bossSimpleMissileMove.cs" />
      <Compile Include="Assets\test.cs" />
      <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />
      <None Include="Assets\Standard Assets\ParticleSystems\ParticleSystemsGuidelines.txt" />

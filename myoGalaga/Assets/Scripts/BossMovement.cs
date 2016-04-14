@@ -3,8 +3,8 @@ using System.Collections;
 
 public class BossMovement : MonoBehaviour {
 
-	int[] bossMoveX ={-32,0,32}; //boss move X
-	int[] bossMoveY = { 15, 0,-15};//boss move y
+	int[] bossMoveX ={-16,0,16}; //boss move X
+	int[] bossMoveY = { -8, 0,8};//boss move y
 
 	public int selectX; //bossmoveselect x position
 	public int selectY;//boss move select y position
@@ -19,10 +19,10 @@ public class BossMovement : MonoBehaviour {
 	float findLocationX;
 	float findLocationY;
 
-	float bossMoveSpeed=3.1f;
+	float bossMoveSpeed=0.1f;
 
-	float moveMountX=3.1f;
-	float moveMountY=3.1f;
+	float moveMountX=0.1f;
+	float moveMountY=0.1f;
 
 	float stopMoving=2f;
 
@@ -77,47 +77,11 @@ public class BossMovement : MonoBehaviour {
 			}
 			stopMoving -= Time.deltaTime;
 		}
-
-		//float compareX = bossMoveX [selectX] - bossCurrentX;
-		//float compareY = bossMoveY [selectY] - bossCurrentY;
-
-		//float LimitMoveX = Mathf.Abs (bossMoveX [selectX]);
-		//float LimitMoveY = Mathf.Abs (bossMoveY [selectY]);
-
-
+			
 	
 		if (isMoveFinish == false) {
 
-		
 
-		
-
-
-			/*			
-
-			if (findLocationX > 0) {
-				checkPositiveXLimit ();
-			} 
-			else if(findLocationX==0)
-			{
-				ifXisZero();
-			}
-
-					else {
-				checkNegativeXLimit ();
-			}
-
-			if (findLocationY > 0) {
-				checkPositiveYLimit ();
-			} 
-			else if(findLocationY==0)
-			{
-				ifYisZero();
-			}
-			else {
-				checkNegativeYLimit ();
-			}
-*/
 			checkXMove ();
 			checkYMove ();
 

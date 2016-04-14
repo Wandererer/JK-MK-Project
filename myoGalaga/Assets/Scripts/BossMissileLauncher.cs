@@ -9,43 +9,65 @@ public class BossMissileLauncher : MonoBehaviour {
 	public GameObject simpleMissile;
 	public GameObject homingMissile;
 
+	int [,] simpleMissilePattern =new int[,]
+	{
+		{2,0,1,0,0,0},
+		{2,3,4,0,0,0},
+		{3,0,1,2,0,0},
+		{3,2,3,4,0,0},
+		{5,0,1,2,3,4}
+	};
+
+	int sPatternNum;
+	int previousPattern=-1;
+
+	public GameObject[] simpleMissileLauncherMatrix;
 	public GameObject[] hommingMissileLauncherMatrix;
 
-	bool isFireMissile=false;
+	bool isFireMissile=true;
 	bool isFireLaser=false;
-	bool isHomingFire=true;
+	bool isHomingFire=false;
 
-	float firerate=0.5f;
+	float firerate=0.7f;
 	float homingFireRate=0.5f;
+	float changeSimplePatternTime=-1f;
 
 	int homingCount=0;
 
 	// Use this for initialization
 	void Start () {
-	
+		selectSimpleMissilePattern ();
+		previousPattern = sPatternNum;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		firerate -= Time.deltaTime;
+		changeSimplePatternTime -= Time.deltaTime;
+
+		if (changeSimplePatternTime < 0f) {
+			previousPattern = sPatternNum;
+			selectSimpleMissilePattern ();
+			ChangePatternIfPastPatternSame ();
+			changeSimplePatternTime = 6f;
+		}
+
 
 		if (isFireMissile == true) {
 			if (firerate < 0f) {
-				GameObject simpleFire1 = Instantiate (simpleMissile);
-				simpleFire1.GetComponent<Transform> ().position = new Vector3 (
-					simpleMissileLauncher1.GetComponent<Transform>().position.x,
-					simpleMissileLauncher1.GetComponent<Transform>().position.y,
-					simpleMissileLauncher1.GetComponent<Transform>().position.z
-				);
+				int limitSimpleMatrix = simpleMissilePattern [sPatternNum,0];
+				for (int i = 1; i <= limitSimpleMatrix; i++) {
+					GameObject simpleFire1 = Instantiate (simpleMissile);
+					simpleFire1.GetComponent<Transform> ().position = new Vector3 (
+						simpleMissileLauncherMatrix[simpleMissilePattern [sPatternNum , i]].GetComponent<Transform>().position.x,
+						simpleMissileLauncherMatrix[simpleMissilePattern [sPatternNum, i]].GetComponent<Transform>().position.y,
+						simpleMissileLauncherMatrix[simpleMissilePattern [sPatternNum, i]].GetComponent<Transform>().position.z
+					);
 
-				GameObject simpleFire2 = Instantiate (simpleMissile);
-				simpleFire2.GetComponent<Transform> ().position = new Vector3 (
-					simpleMissileLauncher2.GetComponent<Transform>().position.x,
-					simpleMissileLauncher2.GetComponent<Transform>().position.y,
-					simpleMissileLauncher2.GetComponent<Transform>().position.z
-				);
 
-				firerate = 0.5f;
+				}
+		
+				firerate = 0.7f;
 			}
 		}
 
@@ -79,6 +101,20 @@ public class BossMissileLauncher : MonoBehaviour {
 
 		}
 
+	}
+
+
+	void selectSimpleMissilePattern()
+	{
+		sPatternNum = Random.Range (0, 5);
+
+	}
+
+	void ChangePatternIfPastPatternSame()
+	{
+		while (previousPattern == sPatternNum) {
+			sPatternNum = Random.Range (0, 5);
+		}
 	}
 
 }

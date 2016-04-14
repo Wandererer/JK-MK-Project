@@ -75,7 +75,6 @@
      <Compile Include="Assets\Scripts\ShieldEffect.cs" />
      <Compile Include="Assets\Scripts\UavStatus.cs" />
      <Compile Include="Assets\Scripts\bossSimpleMissileMove.cs" />
-     <Compile Include="Assets\test.cs" />
      <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />
      <None Include="Assets\Standard Assets\ParticleSystems\ParticleSystemsGuidelines.txt" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />

@@ -24,4 +24,7 @@ public class bossSimpleMissileMove : MonoBehaviour {
 		if (z <=-10)
 			Destroy (this.gameObject);//if z>50 destroy this object
 	}
+
+
+
 }

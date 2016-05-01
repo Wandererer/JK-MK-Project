@@ -74,34 +74,39 @@ public class BossMissileLauncher : MonoBehaviour {
 
 		if (isHomingFire == true)
 		{
-			homingFireRate -= Time.deltaTime;
 
-			if (homingFireRate < 0f) 
-			{
-				
-					GameObject homingFire = Instantiate (homingMissile);
-					homingFire.GetComponent<Transform> ().position = new Vector3 (
-					hommingMissileLauncherMatrix [homingCount].GetComponent<Transform> ().position.x,
-					hommingMissileLauncherMatrix [homingCount].GetComponent<Transform> ().position.y,
-					hommingMissileLauncherMatrix [homingCount].GetComponent<Transform> ().position.z);
-				homingCount++;
-				homingFireRate = 0.5f;
-			}
-				
-
-				
-			if(homingCount==8)
-
-			{
-
-				homingCount = 0;
-				isHomingFire = false;
-
-			}
-
+            BossHommingMissileFire();
 		}
 
 	}
+
+    void BossHommingMissileFire()
+    {
+        homingFireRate -= Time.deltaTime;
+
+        if (homingFireRate < 0f)
+        {
+
+            GameObject homingFire = Instantiate(homingMissile);
+            homingFire.GetComponent<Transform>().position = new Vector3(
+            hommingMissileLauncherMatrix[homingCount].GetComponent<Transform>().position.x,
+            hommingMissileLauncherMatrix[homingCount].GetComponent<Transform>().position.y,
+            hommingMissileLauncherMatrix[homingCount].GetComponent<Transform>().position.z);
+            homingCount++;
+            homingFireRate = 0.5f;
+        }
+
+
+
+        if (homingCount == 8)
+        {
+
+            homingCount = 0;
+            isHomingFire = false;
+
+        }
+    }
+
 
 
 	void selectSimpleMissilePattern()

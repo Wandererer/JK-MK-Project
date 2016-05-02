@@ -24,15 +24,22 @@ public class BossMissileLauncher : MonoBehaviour {
 	public GameObject[] simpleMissileLauncherMatrix;
 	public GameObject[] hommingMissileLauncherMatrix;
 
-	bool isFireMissile=true;
-	bool isFireLaser=false;
+    public GameObject[] laserLauncerMatrix;
+    public GameObject[] laserObject;
+
+	bool isFireMissile=false;
+	bool isFireLaser=true;
 	bool isHomingFire=false;
+
+    bool isInstantiateLaserObject = false;
+   
 
 	float firerate=0.7f;
 	float homingFireRate=0.5f;
 	float changeSimplePatternTime=-1f;
 
 	int homingCount=0;
+    int laserObjectCount = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -54,21 +61,7 @@ public class BossMissileLauncher : MonoBehaviour {
 
 
 		if (isFireMissile == true) {
-			if (firerate < 0f) {
-				int limitSimpleMatrix = simpleMissilePattern [sPatternNum,0];
-				for (int i = 1; i <= limitSimpleMatrix; i++) {
-					GameObject simpleFire1 = Instantiate (simpleMissile);
-					simpleFire1.GetComponent<Transform> ().position = new Vector3 (
-						simpleMissileLauncherMatrix[simpleMissilePattern [sPatternNum , i]].GetComponent<Transform>().position.x,
-						simpleMissileLauncherMatrix[simpleMissilePattern [sPatternNum, i]].GetComponent<Transform>().position.y,
-						simpleMissileLauncherMatrix[simpleMissilePattern [sPatternNum, i]].GetComponent<Transform>().position.z
-					);
-
-
-				}
-		
-				firerate = 0.7f;
-			}
+            BossSimpleMissileFire();
 		}
 
 
@@ -78,7 +71,35 @@ public class BossMissileLauncher : MonoBehaviour {
             BossHommingMissileFire();
 		}
 
+        if(isFireLaser ==true)
+        {
+            BossFireLaser();
+        }
+
+
+
 	}
+
+    void BossSimpleMissileFire()
+    {
+        if (firerate < 0f)
+        {
+            int limitSimpleMatrix = simpleMissilePattern[sPatternNum, 0];
+            for (int i = 1; i <= limitSimpleMatrix; i++)
+            {
+                GameObject simpleFire1 = Instantiate(simpleMissile);
+                simpleFire1.GetComponent<Transform>().position = new Vector3(
+                    simpleMissileLauncherMatrix[simpleMissilePattern[sPatternNum, i]].GetComponent<Transform>().position.x,
+                    simpleMissileLauncherMatrix[simpleMissilePattern[sPatternNum, i]].GetComponent<Transform>().position.y,
+                    simpleMissileLauncherMatrix[simpleMissilePattern[sPatternNum, i]].GetComponent<Transform>().position.z
+                );
+
+
+            }
+
+            firerate = 0.7f;
+        }
+    }
 
     void BossHommingMissileFire()
     {
@@ -105,6 +126,35 @@ public class BossMissileLauncher : MonoBehaviour {
             isHomingFire = false;
 
         }
+    }
+
+    void BossFireLaser()
+    {
+        if(isInstantiateLaserObject==false)
+        {
+            for(int i=0;i<laserLauncerMatrix.Length;i++)
+            {
+                GameObject Laser = Instantiate(laserObject[i]);
+                Laser.name = "Laser" + (i+1);
+                Laser.GetComponent<Transform>().position = new Vector3(
+                    laserLauncerMatrix[i].GetComponent<Transform>().position.x,
+                    laserLauncerMatrix[i].GetComponent<Transform>().position.y,
+                    laserLauncerMatrix[i].GetComponent<Transform>().position.z
+               );
+
+                Laser.GetComponent<Transform>().parent = laserLauncerMatrix[i].GetComponent<Transform>();
+                
+                
+                laserObjectCount++;
+
+            }
+
+            if (laserObjectCount == 2)
+                isInstantiateLaserObject = true;
+        }
+
+
+        
     }
 
 

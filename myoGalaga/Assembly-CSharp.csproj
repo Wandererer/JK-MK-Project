@@ -65,11 +65,14 @@
      <Compile Include="Assets\Scripts\BossMovement.cs" />
      <Compile Include="Assets\Scripts\BossMovementAndFire.cs" />
      <Compile Include="Assets\Scripts\BossStatus.cs" />
+     <Compile Include="Assets\Scripts\EnemyChoperMissileLauncher.cs" />
      <Compile Include="Assets\Scripts\EnemyChoperPropellerRotation.cs" />
      <Compile Include="Assets\Scripts\EnemyChoperStatus.cs" />
      <Compile Include="Assets\Scripts\EnemyFighter2Missile.cs" />
      <Compile Include="Assets\Scripts\EnemyFighterMisssile.cs" />
+     <Compile Include="Assets\Scripts\EnemyHellicopterMissileLauncher.cs" />
      <Compile Include="Assets\Scripts\EnemyPlanePropellerRotation.cs" />
+     <Compile Include="Assets\Scripts\EnemyUAVLaserLauncher.cs" />
      <Compile Include="Assets\Scripts\FireMyShipMissile.cs" />
      <Compile Include="Assets\Scripts\GameController.cs" />
      <Compile Include="Assets\Scripts\HomigMissile.cs" />

@@ -1,15 +1,13 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/EnemyHellicopterMissileLauncher.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/OppScripts/Instantiate20Move.cs">
     <Files>
-      <File FileName="Assets/Scripts/EnemyChoperPropellerRotation.cs" Line="13" Column="60" />
-      <File FileName="Assets/Scripts/EnemyPlanePropellerRotation.cs" Line="13" Column="86" />
-      <File FileName="Assets/Scripts/MyShipControl.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/BossMovement.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/EnemyUAVLaserLauncher.cs" Line="21" Column="4" />
-      <File FileName="Assets/Scripts/EnemyFighter2Missile.cs" Line="21" Column="4" />
-      <File FileName="Assets/Scripts/EnemyChoperMissileLauncher.cs" Line="6" Column="34" />
-      <File FileName="Assets/Scripts/EnemyHellicopterMissileLauncher.cs" Line="20" Column="73" />
+      <File FileName="Assets/Scripts/OppScripts/Instantiate1CheckChild.cs" Line="19" Column="3" />
+      <File FileName="Assets/Scripts/OppScripts/Instantiate2CheckChild.cs" Line="19" Column="3" />
+      <File FileName="Assets/Scripts/OppScripts/Instantiate2MissileLauncher.cs" Line="75" Column="3" />
+      <File FileName="Assets/Scripts/OppScripts/Instantiate1MissileLauncher.cs" Line="75" Column="2" />
+      <File FileName="Assets/Scripts/OppScripts/Instantiate20Move.cs" Line="13" Column="32" />
+      <File FileName="Assets/Scripts/OppScripts/Instantiate10Move.cs" Line="5" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

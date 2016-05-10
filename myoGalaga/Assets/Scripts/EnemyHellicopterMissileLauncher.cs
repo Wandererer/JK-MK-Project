@@ -5,6 +5,8 @@ public class EnemyHellicopterMissileLauncher : MonoBehaviour {
 
 	public GameObject missileLauncher1;
 	public GameObject missileLauncher2;
+	public GameObject missile;
+	bool isFire1=false,isFire2=false;
 	public float distanceToHitPoint;
 
 	// Use this for initialization
@@ -19,5 +21,10 @@ public class EnemyHellicopterMissileLauncher : MonoBehaviour {
 		if (Physics.Raycast (transform.position, new Vector3 (0, 0, -1), out hit)) {
 			distanceToHitPoint = Vector3.Distance(transform.position, hit.point);
 		}
+
+
+
+
+
 	}
 }

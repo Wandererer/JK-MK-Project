@@ -21,7 +21,7 @@ public class FireMyShipMissile : MonoBehaviour {
 		                                                        , z += fireSpeed);
 		//this is moving script
 		
-		if (z >= 50)
+		if (z >= 18)
 			Destroy (this.gameObject);//if z>50 destroy this object
 	}
 }

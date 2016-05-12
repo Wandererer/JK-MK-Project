@@ -23,6 +23,7 @@ public class Instantiate10Move : MonoBehaviour {
 			this.GetComponent<Transform> ().position = new Vector3 (x, y, z -= moveSpeedZ);
 		else if (z <= 18) {
 			this.GetComponent<Transform> ().position = new Vector3 (x -= moveSpeedX, y -= moveSpeedY, z -= moveSpeedZ);
+			GetComponent<Transform> ().Rotate ((new Vector3 (0.1f, 0.1f, 0)));
 		}
 		if (z < -5) {
 			Destroy (this.gameObject);

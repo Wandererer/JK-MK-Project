@@ -28,7 +28,7 @@ public class BossMissileLauncher : MonoBehaviour {
     public GameObject[] laserObject;
 
 	bool isFireMissile=false;
-	bool isFireLaser=true;
+	bool isFireLaser=false;
 	bool isHomingFire=false;
 
     bool isInstantiateLaserObject = false;

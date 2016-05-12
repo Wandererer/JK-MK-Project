@@ -273,4 +273,13 @@ if (myoGryoX * 1000 > 120) {
 		 */ 
 	}
 
+
+	/*
+	 Add later
+	void OnCollisionEnter (Collision col)
+	{
+		if (col.transform.tag == "EnemyMissile")
+			Destroy (this.gameObject);
+	}
+*/
 }

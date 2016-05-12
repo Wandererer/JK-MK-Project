@@ -21,14 +21,14 @@ public class HomigMissile : MonoBehaviour {
 
 		target = GameObject.FindGameObjectWithTag ("My").GetComponent<Transform>();
 		float diff = (target.position - transform.position).sqrMagnitude;
-		Debug.Log (diff);
+		//Debug.Log (diff);
 		if (isHoming) {
 			homingMissile.velocity = transform.forward * missileVelocity;
 			var targetRotation = Quaternion.LookRotation (target.position - transform.position);
 			homingMissile.MoveRotation (Quaternion.RotateTowards (transform.rotation, targetRotation, 20));
 		}
 		else
-			transform.position = new Vector3 (x, y, z -= 1);
+			GetComponent<Rigidbody> ().AddForce (this.GetComponent<Transform> ().position, ForceMode.Force);
 
 		if(diff<7)  {
 			isHoming = false;

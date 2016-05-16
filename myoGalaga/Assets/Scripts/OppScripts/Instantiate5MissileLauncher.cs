@@ -17,7 +17,7 @@ public class Instantiate5MissileLauncher : MonoBehaviour {
 	void Update () {
 		z = this.GetComponent<Transform> ().position.z;
 
-		if (z < 18) {
+		if (z < 17) {
 			if (isFire1 == false) {
 				isFire1 = true;
 			
@@ -30,7 +30,7 @@ public class Instantiate5MissileLauncher : MonoBehaviour {
 
 				if (isScriptCalled == false) {
 					choperSciprts = missile.GetComponent<ChoperHommingMissile> ();
-					Debug.Log ("Called");
+				//	Debug.Log ("Called");
 					choperSciprts.setIsFireTrue ();
 					isScriptCalled = true;
 				}

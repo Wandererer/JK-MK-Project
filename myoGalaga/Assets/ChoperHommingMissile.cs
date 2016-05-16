@@ -52,6 +52,8 @@ public class ChoperHommingMissile : MonoBehaviour {
 			}
 		}
 
+        if (z < -10)
+            Destroy(this.gameObject);
 
 	}
 

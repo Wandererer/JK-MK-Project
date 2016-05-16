@@ -17,7 +17,7 @@ public class Instantiate50Move : MonoBehaviour {
 		y = this.GetComponent<Transform> ().position.y;
 		z = this.GetComponent<Transform> ().position.z;
 
-		if (z > 18) {
+		if (z > 17) {
 			this.GetComponent<Transform> ().position = new Vector3 (x, y, z -= moveSpeedZ);
 		} else {
 			this.GetComponent<Transform> ().position = new Vector3 (x-=moveSpeedX, y-=moveSpeedY, z -= moveSpeedZ);

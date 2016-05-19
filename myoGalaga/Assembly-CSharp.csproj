@@ -87,6 +87,9 @@
      <Compile Include="Assets\Scripts\OppScripts\Instantiate120Move.cs" />
      <Compile Include="Assets\Scripts\OppScripts\Instantiate12MissileLauncher.cs" />
      <Compile Include="Assets\Scripts\OppScripts\Instantiate130Move.cs" />
+     <Compile Include="Assets\Scripts\OppScripts\Instantiate140Move.cs" />
+     <Compile Include="Assets\Scripts\OppScripts\Instantiate150Move.cs" />
+     <Compile Include="Assets\Scripts\OppScripts\Instantiate15LaserLanucher.cs" />
      <Compile Include="Assets\Scripts\OppScripts\Instantiate1MissileLauncher.cs" />
      <Compile Include="Assets\Scripts\OppScripts\Instantiate20Move.cs" />
      <Compile Include="Assets\Scripts\OppScripts\Instantiate2MissileLauncher.cs" />
@@ -107,6 +110,7 @@
      <Compile Include="Assets\Scripts\OppScripts\InstantiateCheckChild.cs" />
      <Compile Include="Assets\Scripts\SemiBossStatus.cs" />
      <Compile Include="Assets\Scripts\ShieldEffect.cs" />
+     <Compile Include="Assets\Scripts\ThickLaserScript.cs" />
      <Compile Include="Assets\Scripts\UavStatus.cs" />
      <Compile Include="Assets\Scripts\bossSimpleMissileMove.cs" />
      <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />

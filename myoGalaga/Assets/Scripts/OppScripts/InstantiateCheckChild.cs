@@ -4,6 +4,8 @@ using System.Collections;
 public class InstantiateCheckChild : MonoBehaviour {
 
     int childCount;
+
+
 	// Use this for initialization
 	void Start () {
 	

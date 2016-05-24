@@ -9,7 +9,7 @@ public class ChoperHommingMissile : MonoBehaviour {
 	Vector3 targetPosition;
 	bool isHoming=false,isStartHoming=false;
 	public bool isLock=false;
-	float x,y,z;
+	float z;
 	float homingStartTime=0.3f;
 
 	// Use this for initialization
@@ -24,8 +24,6 @@ public class ChoperHommingMissile : MonoBehaviour {
 		//if(homingStartTime>0f)
 			//GetComponent<Rigidbody> ().AddForce (this.GetComponent<Transform> ().position,ForceMode.Acceleration);
 
-		x = this.GetComponent<Transform> ().position.x;
-		y = this.GetComponent<Transform> ().position.y;
 		z = this.GetComponent<Transform> ().position.z;
 
 		if (isStartHoming == false) {
@@ -41,7 +39,7 @@ public class ChoperHommingMissile : MonoBehaviour {
 	
 	//	Debug.Log (targetPosition + " sdfasdfsadf");
 		if (isStartHoming == true) {
-			if (z > 4.5) {
+			if (z > 2.5) {
 				float diff = (targetPosition - transform.position).sqrMagnitude;
 				//Debug.Log (diff);
 				if (isHoming) {

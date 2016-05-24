@@ -34,3 +34,5 @@
 /Users/JK/Documents/JK-MK-Project/myoGalaga/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/JK/Documents/JK-MK-Project/myoGalaga/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/JK/Documents/JK-MK-Project/myoGalaga/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/JK/Documents/JK-MK-Project/myoGalaga/Temp/bin/Debug/Assembly-CSharp.dll.mdb
+/Users/JK/Documents/JK-MK-Project/myoGalaga/Temp/bin/Debug/Assembly-CSharp.dll

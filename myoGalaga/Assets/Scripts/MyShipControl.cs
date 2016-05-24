@@ -256,21 +256,6 @@ public class MyShipControl : MonoBehaviour {
 
 
 
-
-		/*
-		 else{
-			this.GetComponent<Transform> ().rotation = new Quaternion (180, 0 , 0 , -180);
-		}
-
-
-if (myoGryoX * 1000 > 120) {
-			this.GetComponent<Transform> ().rotation = new Quaternion (270, 0, 0, -180);
-		} else if(myoGryoX * 1000 < -120) {
-			this.GetComponent<Transform> ().rotation = new Quaternion (90, 0, 0, -180);
-
-		}
-		 
-		 */ 
 	}
 
 

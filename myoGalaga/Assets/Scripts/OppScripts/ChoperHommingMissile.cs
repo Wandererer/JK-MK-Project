@@ -30,7 +30,7 @@ public class ChoperHommingMissile : MonoBehaviour {
 			if (isLock == true) {
 				target = GameObject.FindGameObjectWithTag ("My").GetComponent<Transform> ();
 				targetPosition = target.position;
-				Debug.Log ("target Lock");
+				//Debug.Log ("target Lock");
 				isLock = false;
 				isHoming = true;
 				isStartHoming = true;

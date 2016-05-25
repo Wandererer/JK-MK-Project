@@ -30,7 +30,7 @@ public class HomigMissile : MonoBehaviour {
 		else
 			GetComponent<Rigidbody> ().AddForce (this.GetComponent<Transform> ().position, ForceMode.Force);
 
-		if(diff<7)  {
+		if(diff<2.5)  {
 			isHoming = false;
 		}
 

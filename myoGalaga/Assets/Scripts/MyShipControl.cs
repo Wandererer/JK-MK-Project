@@ -7,23 +7,25 @@ using UnlockType = Thalmic.Myo.UnlockType;
 using VibrationType = Thalmic.Myo.VibrationType;
 
 public class MyShipControl : MonoBehaviour {
-	public GameObject myo = null;
-	public GameObject bomb=null;
+	public GameObject myo;
+	public GameObject bomb;
 	public GameObject controller;
-	
-	float plainLocalX, plainLocalY;
-	float plainTransform;
+    public GameObject DestroyParticle;
+
+	float planeLocalX, planeLocalY,planeLocalZ;
 
 	float transparentLocalX,transparentLocalY;
 	float limitPlainX, limitPlainY; 
-	float firerate=0.1f;
+	float firerate=0.2f;
 
 	bool isMyControl=true; //if exceed resolution ismycontorl=false;
+    bool isParticle = false;
 
 	float myoGryoX;
 	float myoGryoY;
 
 	public GameObject missile;
+    public GameObject missile2;
 	public GameObject transparentPlain;
 
     Transform startRotation;
@@ -31,7 +33,7 @@ public class MyShipControl : MonoBehaviour {
 
 	int bombCount;
     int direction;
-
+    int power=1;
    
     [Range(0, 180)]
     public float angle;
@@ -40,7 +42,6 @@ public class MyShipControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//myo = GameObject.Find ("Myo");
 		bombCount=controller.GetComponent<GameController>().getBombCount();
 	}
 	
@@ -51,75 +52,44 @@ public class MyShipControl : MonoBehaviour {
 
 		 myoGryoX =thalmicMyo.gyroscope.x;
          myoGryoY= thalmicMyo.gyroscope.y;
-		//increase rate for moving spaceship
         myoGryoX *= 0.009f;
         myoGryoY *= 0.009f;
 
 
-	//Debug.Log (myoGryoX*1000 + "  " + myoGryoY*1000);
-		//Debug.Log(myoAccelX +"   "+myoAccelY);
-		//Debug.Log(myoAccelX);
 
 
 		Vector3 screenPosition = Camera.main.WorldToViewportPoint (this.GetComponent<Transform> ().position); 
-		//find screen limit
+
 		if (isMyControl == true) {
 			limitPlainX = screenPosition.x;
 			limitPlainY = screenPosition.y;
 		}
 
-		//Debug.Log (screenPosition);
+        planeLocalX = this.gameObject.GetComponent<Transform>().position.x;
+        planeLocalY = this.gameObject.GetComponent<Transform>().position.y;
+        planeLocalZ = this.gameObject.GetComponent<Transform>().position.z;
 
-		// Debug.Log(thalmicMyo.gyroscope + " dd  ");
-		// Debug.Log(newX + "   " + newY);
-		//Debug.Log(thalmicMyo.gyroscope.x +"   "+thalmicMyo.gyroscope.y);
-		
-		//  Debug.Log(thalmicMyo.accelerometer.x);
-		
-		// this.gameObject.GetComponent<Transform>().position = (thalmicMyo.gyroscope/10);
-		
-		//plainTransform = this.gameObject.GetComponent<Transform> ().rotation;
-		plainLocalX = this.gameObject.GetComponent<Transform>().position.x;
-		plainLocalY = this.gameObject.GetComponent<Transform>().position.y;
-
-     //   test = this.gameObject.GetComponent<Transform>();
-  
-
-
-	//	Debug.Log (plainQuaternionX +"  "+plainQuaternionY + "  " + plainQuaternionZ);
-       // Debug.Log(Quaternion.Euler(270, 310, 90));
-
-
-		//plainRotationX = this.gameObject.GetComponent<Transform> ().rotation.x;
-		//plainRotationY = this.gameObject.GetComponent<Transform> ().eulerAngles.y;
-		//plainRotationZ = this.gameObject.GetComponent<Transform> ().eulerAngles.z;
 
 		firerate -= Time.deltaTime; //how often do you want fire pistol
 
-		if (limitPlainX >= 0.05f && limitPlainX <= 0.95f && limitPlainY >= 0.05f && limitPlainY <= 0.95f)
-			this.gameObject.GetComponent<Transform> ().position = new Vector3 (plainLocalX += (myoGryoY) * -1, plainLocalY += myoGryoX, 0);
-		else 
-		{
-			isMyControl = false;
-			this.gameObject.GetComponent<Transform> ().position = new Vector3 (plainLocalX, plainLocalY, 0);
-			AddTransparentShipObjectForPostionLimitExeed ();
-		}
 
-
+        DontExceedCameraSight();
 		MovelikeRealPlain ();
 
-		//Debug.Log (this.gameObject.GetComponent<Transform> ().position);
 
 		//change transform this space ship
 
 		if (thalmicMyo.pose == Pose.Fist) { //if your gesture is fist then fire
-			if(firerate<=0)
+			if(firerate<=0 && power==1)
 			{
 				//add fire sound later
-				GameObject test=Instantiate(missile); //create missile gameobjet
-				test.GetComponent<Transform>().position=new Vector3(plainLocalX,plainLocalY,1); //create missile object in front of z+1 from this object
-				firerate=0.1f; //firerate initiallization
+                FireMissileP1();
 			}
+
+            else if(firerate<=0 && power==2)
+            {
+                FireMissileP2();
+            }
 			
 		}
 
@@ -136,12 +106,38 @@ public class MyShipControl : MonoBehaviour {
 		if (obj == null && bombCount>0) {
 			obj = Instantiate (bomb);
 			obj.name = "Nuclear";
-			obj.GetComponent<Transform>().position=new Vector3(plainLocalX,plainLocalY-1,0);
+            obj.GetComponent<Transform>().position = new Vector3(planeLocalX, planeLocalY - 1, 0);
 			controller.GetComponent<GameController> ().setBombCount (bombCount--);
 		}
 	}
 
+    void FireMissileP1()
+    {
+        GameObject Missile = Instantiate(missile); //create missile gameobjet
+        Missile.GetComponent<Transform>().position = new Vector3(planeLocalX, planeLocalY, planeLocalZ+1); //create missile object in front of z+1 from this object
+        firerate = 0.2f; //firerate initiallization
+    }
+    void FireMissileP2()
+    {
+        GameObject Missile1 = Instantiate(missile2); //create missile gameobjet
+        GameObject Missile2 = Instantiate(missile2); //create missile gameobjet
+        Missile1.GetComponent<Transform>().position = new Vector3(planeLocalX - 0.5f, planeLocalY, planeLocalZ+1); //create missile object in front of z+1 from this object
+        Missile2.GetComponent<Transform>().position = new Vector3(planeLocalX + 0.5f, planeLocalY, planeLocalZ + 1); //create missile object in front of z+1 from this object
+        firerate = 0.2f; //firerate initiallization
+    }
 
+    void DontExceedCameraSight()
+    {
+        if (limitPlainX >= 0.05f && limitPlainX <= 0.95f && limitPlainY >= 0.05f && limitPlainY <= 0.95f)
+            this.gameObject.GetComponent<Transform>().position = new Vector3(planeLocalX += (myoGryoY) * -1, planeLocalY += myoGryoX, 0);
+        else
+        {
+            isMyControl = false;
+            this.gameObject.GetComponent<Transform>().position = new Vector3(planeLocalX, planeLocalY, 0);
+            AddTransparentShipObjectForPostionLimitExeed();
+        }
+
+    }
 
 	void AddTransparentShipObjectForPostionLimitExeed()
 	{
@@ -149,8 +145,8 @@ public class MyShipControl : MonoBehaviour {
 		GameObject obj = GameObject.Find ("TransparentPlain");
 		if (obj == null) {
 			obj = Instantiate (transparentPlain);
-			transparentLocalX = plainLocalX;
-			transparentLocalY = plainLocalY;
+            transparentLocalX = planeLocalX;
+            transparentLocalY = planeLocalY;
 			obj.GetComponent<Transform> ().position = new Vector3 (transparentLocalX, transparentLocalY, 0);
 			obj.name = "TransparentPlain";
 
@@ -163,9 +159,9 @@ public class MyShipControl : MonoBehaviour {
 
 			if (objLimitX >= 0.05f && objLimitX <= 0.95f && objLimitY >= 0.05f && objLimitY <= 0.95f) {
 				//Debug.Log ("범위안에 들어와");
-				plainLocalX = transparentLocalX;
-				plainLocalY = transparentLocalY;
-				this.gameObject.GetComponent<Transform> ().position = new Vector3 (plainLocalX += (myoGryoY) * -1, plainLocalY += myoGryoX, 0);
+                planeLocalX = transparentLocalX;
+                planeLocalY = transparentLocalY;
+                this.gameObject.GetComponent<Transform>().position = new Vector3(planeLocalX += (myoGryoY) * -1, planeLocalY += myoGryoX, 0);
 				//Debug.Log (limitPlainY + "  " + limitPlainY);
 
 				isMyControl = true;
@@ -192,40 +188,6 @@ public class MyShipControl : MonoBehaviour {
 			GetComponent<Transform> ().Rotate ((new Vector3 (0, 1, 0)) * Time.deltaTime * 200f);
 		
 		} 
-
-
-
-
-		/*
-		 //버그그그버버그그   
-		if (myoGryoX * 1000 < -120) {//아래  
-			GetComponent<Transform> ().Rotate ((new Vector3 (1, 0, 0)) * Time.deltaTime * 200f);
-
-		} 
-
-		else if (myoGryoX * 1000 > 120) { //위로  
-			GetComponent<Transform> ().Rotate ((new Vector3 (-1, 0, 0)) * Time.deltaTime * 200f);
-		}
-
-
-
-		if (myoGryoX * 1000 >= -120 && myoGryoX*1000 <= 120) {
-			float limitX = this.GetComponent<Transform> ().rotation.eulerAngles.x;
-			float limitY = this.GetComponent<Transform> ().rotation.eulerAngles.y;
-			float limitZ = this.GetComponent<Transform> ().rotation.eulerAngles.z;
-
-			limitY = Mathf.Round (limitY);
-			limitZ = Mathf.Round (limitZ);
-			limitX = Mathf.Round (limitX);
-		
-			if (limitX > 270 && limitY==180 && limitZ==180) {
-				GetComponent<Transform> ().Rotate ((new Vector3 (1, 0, 0)) * Time.deltaTime * 200f);
-			}
-			else
-				GetComponent<Transform> ().Rotate ((new Vector3 (-1, 0, 0)) * Time.deltaTime * 200f);
-		}
-
-*/
 
 		if ((myoGryoY * 1000 <= 120 && myoGryoY * 1000 >= -120)) {//중앙  
 			float limitX = this.GetComponent<Transform> ().rotation.eulerAngles.x;
@@ -258,13 +220,25 @@ public class MyShipControl : MonoBehaviour {
 
 	}
 
-
-	/*
-	 Add later
 	void OnCollisionEnter (Collision col)
 	{
-		if (col.transform.tag == "EnemyMissile")
-			Destroy (this.gameObject);
+        if (col.transform.tag == "EnemyMissile")
+        {
+            Destroy(this.gameObject);
+            if (isParticle == false)
+            {
+                isParticle = true;
+                GameObject particle = Instantiate(DestroyParticle);
+                particle.GetComponent<Transform>().position =
+                    new Vector3(this.GetComponent<Transform>().position.x,
+                        this.GetComponent<Transform>().position.y,
+                        this.GetComponent<Transform>().position.z);
+            }
+        }
+        else if (col.transform.tag == "Bomb")
+            bombCount++;
+        else if (col.transform.tag == "Power")
+            power++;
 	}
-*/
+
 }

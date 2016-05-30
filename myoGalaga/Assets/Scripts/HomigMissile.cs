@@ -7,10 +7,11 @@ public class HomigMissile : MonoBehaviour {
 	float missileVelocity=20f;
 	Transform target;
 	bool isHoming=true;
-
+    
 	// Use this for initialization
 	void Start () {
-		homingMissile = this.GetComponent<Rigidbody> ();
+        homingMissile = this.GetComponent<Rigidbody>();
+     
 	}
 	
 	// Update is called once per frame
@@ -19,23 +20,43 @@ public class HomigMissile : MonoBehaviour {
 		float y = transform.position.y;
 		float z = transform.position.z;
 
-		target = GameObject.FindGameObjectWithTag ("My").GetComponent<Transform>();
-		float diff = (target.position - transform.position).sqrMagnitude;
+        float limitX = this.GetComponent<Transform>().rotation.eulerAngles.x;
+        Debug.Log(limitX);
+
+        this.GetComponent<Transform>().rotation = new Quaternion(-180, 0, 0, 0);
+        Debug.Log(limitX);
+
+        try {
+            target = GameObject.FindGameObjectWithTag("My").GetComponent<Transform>();
+            float diff= (target.position - transform.position).sqrMagnitude;
+           if (isHoming)
+           {
+               transform.LookAt(target.transform);
+               homingMissile.velocity = transform.forward * missileVelocity;
+               var targetRotation = Quaternion.LookRotation((target.position - transform.position) ) ;
+
+               homingMissile.MoveRotation(Quaternion.RotateTowards(transform.rotation, targetRotation,100));
+
+
+           }
+           else
+               GetComponent<Rigidbody>().AddForce(this.GetComponent<Transform>().position, ForceMode.Force);
+
+           if (diff < 5)
+           {
+               isHoming = false;
+           }
+
+          
+        }
+        catch(System.NullReferenceException e)
+        {
+            Destroy(this.gameObject);
+        }
+
 		//Debug.Log (diff);
-		if (isHoming) {
-			homingMissile.velocity = transform.forward * missileVelocity;
-			var targetRotation = Quaternion.LookRotation (target.position - transform.position);
-			homingMissile.MoveRotation (Quaternion.RotateTowards (transform.rotation, targetRotation, 20));
-		}
-		else
-			GetComponent<Rigidbody> ().AddForce (this.GetComponent<Transform> ().position, ForceMode.Force);
-
-		if(diff<2.5)  {
-			isHoming = false;
-		}
-
-		if (z < -10)
-			Destroy (this.gameObject);
+        if (z < -10)
+            Destroy(this.gameObject);
 	
 	}
 }

@@ -28,18 +28,28 @@ public class ChoperHommingMissile : MonoBehaviour {
 
 		if (isStartHoming == false) {
 			if (isLock == true) {
-				target = GameObject.FindGameObjectWithTag ("My").GetComponent<Transform> ();
-				targetPosition = target.position;
-				//Debug.Log ("target Lock");
-				isLock = false;
-				isHoming = true;
-				isStartHoming = true;
+                try
+                {
+                    target = GameObject.FindGameObjectWithTag("My").GetComponent<Transform>();
+                }
+                catch (System.NullReferenceException e)
+                {
+                    //Do Nothing
+                }
+                if (target != null)
+                {
+                    targetPosition = target.position;
+                    //Debug.Log ("target Lock");
+                    isLock = false;
+                    isHoming = true;
+                    isStartHoming = true;
+                }
 			}
 		}
 	
 	//	Debug.Log (targetPosition + " sdfasdfsadf");
 		if (isStartHoming == true) {
-			if (z > 2.5) {
+			if (z > 5) {
 				float diff = (targetPosition - transform.position).sqrMagnitude;
 				//Debug.Log (diff);
 				if (isHoming) {

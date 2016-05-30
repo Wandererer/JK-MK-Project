@@ -5,7 +5,7 @@ public class Instantiate130Move : MonoBehaviour {
 	float x, y, z;
 	float moveSpeedZ = 0.8f, moveSpeedX = 0.2f, moveSpeedY = 0.2f;
 	bool isRight=true,isLeft=false;
-	public int countEndPosition=0;
+	int countEndPosition=0;
 	// Use this for initialization
 	// Use this for initialization
 	void Start () {
@@ -39,7 +39,7 @@ public class Instantiate130Move : MonoBehaviour {
 		}
 
 
-		if (countEndPosition == 6)
+		if (countEndPosition == 10)
 			Destroy (this.gameObject);
 	}
 }

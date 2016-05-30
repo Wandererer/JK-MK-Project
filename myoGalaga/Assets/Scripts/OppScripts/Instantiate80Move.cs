@@ -4,7 +4,7 @@ using System.Collections;
 public class Instantiate80Move : MonoBehaviour {
 
 	float x, y, z;
-	float moveSpeedZ = 0.1f, moveSpeedX = 0.4f, moveSpeedY = 0.2f;
+	float moveSpeedZ = 0.1f, moveSpeedX = 0.2f, moveSpeedY = 0.1f;
 
 	// Use this for initialization
 	void Start () {

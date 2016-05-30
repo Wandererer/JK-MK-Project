@@ -3,11 +3,14 @@ using System.Collections;
 
 public class DestroyEffect : MonoBehaviour {
 
+
+
 	void Update ()
 	{
 
-		if(Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.C))
-		   Destroy(transform.gameObject);
+  
+		if( this.GetComponentInChildren<ParticleSystem>().time>2f)
+		   Destroy(this.gameObject);
 	
 	}
 }

@@ -3,9 +3,11 @@ using System.Collections;
 
 public class BombExplode : MonoBehaviour {
 
+    public GameObject bombEffect;
 	float bombTransformZ;
 	float bombTransformX;
 	float bombTransformY;
+    bool isParticle = false;
 	// Use this for initialization
 	void Start () {
 	
@@ -21,7 +23,24 @@ public class BombExplode : MonoBehaviour {
 
 		if (bombTransformZ >= 20) {
 			//particle effect and sound add later
-			Destroy(this.gameObject);
+           
+            GameObject[] getAllEnemy=GameObject.FindGameObjectsWithTag("Enemy");
+            for (int i = 0; i < getAllEnemy.Length;i++ )
+            {
+                getAllEnemy[i].GetComponent<EnemyStatus>().hp -= 100;
+            }
+
+                Destroy(this.gameObject);
+
+            if (isParticle == false)
+            {
+                isParticle = true;
+                GameObject particle = Instantiate(bombEffect);
+                particle.GetComponent<Transform>().position =
+                    new Vector3(this.GetComponent<Transform>().position.x,
+                        this.GetComponent<Transform>().position.y,
+                        this.GetComponent<Transform>().position.z);
+            }
 		}
 		
 	}

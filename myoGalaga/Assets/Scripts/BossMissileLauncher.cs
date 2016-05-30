@@ -30,7 +30,7 @@ public class BossMissileLauncher : MonoBehaviour {
 	bool isFireMissile=false;
 	bool isFireLaser=false;
 
-	bool isHomingFire=false;
+	bool isHomingFire=true;
 
 
 
@@ -112,6 +112,7 @@ public class BossMissileLauncher : MonoBehaviour {
         {
 
             GameObject homingFire = Instantiate(homingMissile);
+            homingFire.GetComponent<Transform>().rotation = new Quaternion(-180, 0, 0, 0);
             homingFire.GetComponent<Transform>().position = new Vector3(
             hommingMissileLauncherMatrix[homingCount].GetComponent<Transform>().position.x,
             hommingMissileLauncherMatrix[homingCount].GetComponent<Transform>().position.y,

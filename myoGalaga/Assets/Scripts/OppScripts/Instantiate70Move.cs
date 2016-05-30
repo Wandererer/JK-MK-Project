@@ -22,7 +22,7 @@ public class Instantiate70Move : MonoBehaviour {
             this.GetComponent<Transform>().position = new Vector3(x, y, z -= moveSpeedZ);
         else if (y < 0.7)
         {
-			this.GetComponent<Transform>().position = new Vector3(x +=moveSpeedX, y, z);
+			this.GetComponent<Transform>().position = new Vector3(x +=0.1f, y, z);
             GetComponent<Transform>().Rotate((new Vector3(0, -7f, 0)));
         }
         else

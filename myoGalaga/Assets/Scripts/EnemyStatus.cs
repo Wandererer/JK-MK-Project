@@ -19,7 +19,7 @@ public class EnemyStatus : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log(hp);
+//        Debug.Log(hp);
 
 	    if(hp<=0 && isParticle==false)
         {
@@ -40,8 +40,12 @@ public class EnemyStatus : MonoBehaviour {
 
     void OnCollisionEnter(Collision col)
     {
+		try{
         if (col.transform.tag == "myMissile") ;
             hp -= col.gameObject.GetComponent<FireMyShipMissile>().damage;
-            Debug.Log(hp + "  hit");
+		}
+		catch(System.NullReferenceException e) {
+			//do Nothing
+		}
     }//
 }

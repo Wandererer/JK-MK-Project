@@ -23,10 +23,8 @@ public class Instantiate5MissileLauncher : MonoBehaviour {
 			
 
 				GameObject missile = homingissile;
-				missile.GetComponent<Transform> ().position = new Vector3 (missileLauncher1.GetComponent<Transform> ().position.x,
-					missileLauncher1.GetComponent<Transform> ().position.y,
-					missileLauncher1.GetComponent<Transform> ().position.z);
-				Instantiate (missile);
+
+				Instantiate (missile,transform.position,new Quaternion(0,0,180,0));
 
 				if (isScriptCalled == false) {
 					choperSciprts = missile.GetComponent<ChoperHommingMissile> ();

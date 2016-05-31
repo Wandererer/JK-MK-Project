@@ -11,6 +11,7 @@ public class ChoperHommingMissile : MonoBehaviour {
 	public bool isLock=false;
 	float z;
 	float homingStartTime=0.3f;
+	float rotationY,rotationZ;
 
 	// Use this for initialization
 	void Start () {
@@ -25,6 +26,8 @@ public class ChoperHommingMissile : MonoBehaviour {
 			//GetComponent<Rigidbody> ().AddForce (this.GetComponent<Transform> ().position,ForceMode.Acceleration);
 
 		z = this.GetComponent<Transform> ().position.z;
+	
+
 
 		if (isStartHoming == false) {
 			if (isLock == true) {
@@ -34,7 +37,7 @@ public class ChoperHommingMissile : MonoBehaviour {
                 }
                 catch (System.NullReferenceException e)
                 {
-                    //Do Nothing
+					Destroy (this.gameObject);
                 }
                 if (target != null)
                 {
@@ -56,6 +59,7 @@ public class ChoperHommingMissile : MonoBehaviour {
 					homingMissile.velocity = transform.forward * missileVelocity;
 					var targetRotation = Quaternion.LookRotation (targetPosition - transform.position);
 					homingMissile.MoveRotation (Quaternion.RotateTowards (transform.rotation, targetRotation, 20));
+					//transform.rotation=Quaternion.Slerp(transform.rotation,target.rotation,10);
 				}
 			} else {
 				GetComponent<Rigidbody> ().AddForce (this.GetComponent<Transform> ().position, ForceMode.Force);
@@ -70,5 +74,15 @@ public class ChoperHommingMissile : MonoBehaviour {
 	public void setIsFireTrue()
 	{
 		isLock = true;
+	}
+
+
+	void OnCollisionEnter (Collision col)
+	{
+		if (col.transform.tag == "My")
+		{
+			Destroy (this.gameObject);
+		}
+
 	}
 }

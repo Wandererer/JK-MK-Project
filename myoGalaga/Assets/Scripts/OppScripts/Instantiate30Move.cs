@@ -4,7 +4,7 @@ using System.Collections;
 public class Instantiate30Move : MonoBehaviour {
 
 	float x,y,z;
-	float moveSpeedZ=0.1f,moveSpeedY=0.2f;
+	float moveSpeedZ=0.1f,moveSpeedY=0.1f;
 
 	// Use this for initialization
 	void Start () {
@@ -23,7 +23,7 @@ public class Instantiate30Move : MonoBehaviour {
 			Destroy (this.gameObject);
 		else if (z <= 17) {
 			this.GetComponent<Transform> ().position = new Vector3 (x, y += moveSpeedY, z);
-			GetComponent<Transform> ().Rotate ((new Vector3 (0, 0.1f, 0)));
+			GetComponent<Transform> ().Rotate ((new Vector3 (0, 0, 0.1f)));
 		}
 
 	}

@@ -25,7 +25,7 @@ public class Instantiate15LaserLanucher : MonoBehaviour {
 			if (red < 40) {
 				red = color.material.color.r;
 				this.GetComponentInChildren<MeshRenderer> ().material.color = new Color (red += 0.5f, color.material.color.g, color.material.color.b);
-				Debug.Log (red);
+			//	Debug.Log (red);
 			} else {
 				if (isInstantiateLaser == false) {
 					isInstantiateLaser = true;

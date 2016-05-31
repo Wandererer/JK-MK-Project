@@ -29,7 +29,7 @@ public class FireMyShipMissile : MonoBehaviour {
 
     void OnCollisionEnter(Collision col)
     {
-        Debug.Log(col.transform.name);
+    //    Debug.Log(col.transform.name);
 
         if (isParticle == false)
         {

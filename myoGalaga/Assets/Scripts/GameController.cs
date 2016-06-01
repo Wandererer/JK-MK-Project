@@ -25,13 +25,16 @@ public class GameController : MonoBehaviour {
 	float instantiateTime=0f;
 	float gameTime=0f; //game time
 	float restartTime=3.0f;
+
 	public int myLife=3; //my totla life
 	public int score=0;
 	public int bomb=3; //bomb use total count;
+    int semiBossCount = 0;
 
 	bool isInstantiateEnemy=false;
     bool isDead = true;
     bool isInstantiateMyShip = false;
+    bool isSemiBossTiming = false;
 
     GameState gameState;
  
@@ -77,7 +80,7 @@ public class GameController : MonoBehaviour {
 	void MakeEnemy()
 	{
 		instantiateTime -= Time.deltaTime;
-		if(instantiateTime<0)
+		if(instantiateTime<0  && isSemiBossTiming==false)
 			isInstantiateEnemy=false;
 
 		if (instantiateTime < 0f && isInstantiateEnemy==false) {
@@ -91,8 +94,14 @@ public class GameController : MonoBehaviour {
 			else if (enemyInstanCount < 12)
 				instantiateTime = 5f;
 			else 
-				instantiateTime = 11f;
+				instantiateTime = 10f;
 		}
+
+        if(enemyInstanCount==15 && isSemiBossTiming==false)
+        {
+            enemyInstanCount = 0;
+            isSemiBossTiming = true;
+        }
 
 	}
 
@@ -107,7 +116,8 @@ public class GameController : MonoBehaviour {
             gameState = GameState.Play;
         else
         {
-            gameState = GameState.Pause;
+       //     gameState = GameState.Pause;
+            gameState = GameState.Play;
         }
     }
 

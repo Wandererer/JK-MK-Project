@@ -41,7 +41,7 @@ public class Instantiate140Move : MonoBehaviour {
 		}
 
 
-		if (countEndPosition == 9)
+		if (countEndPosition == 8)
 			Destroy (this.gameObject);
 
 	}

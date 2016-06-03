@@ -11,7 +11,10 @@ public class FireMyShipMissile : MonoBehaviour {
 	void Start () {
 	
 	}
-	
+	void FixedUpdate()
+	{
+
+	}
 	// Update is called once per frame
 	void Update () {
 		float z = this.GetComponent<Transform> ().position.z; //get from this object transformation.z info
@@ -30,6 +33,14 @@ public class FireMyShipMissile : MonoBehaviour {
     void OnCollisionEnter(Collision col)
     {
     //    Debug.Log(col.transform.name);
+		if (col.transform.tag == "Enemy" )
+			this.GetComponent<Rigidbody> ().isKinematic = true;
+
+		if (col.transform.name == "beam") {
+			this.GetComponent<Rigidbody> ().isKinematic = true;
+			Destroy (this.gameObject);
+		}
+
 
         if (isParticle == false)
         {

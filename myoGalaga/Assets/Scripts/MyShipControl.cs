@@ -44,7 +44,12 @@ public class MyShipControl : MonoBehaviour {
 	void Start () {
 		bombCount=controller.GetComponent<GameController>().getBombCount();
 	}
-	
+
+	void FixedUpdate()
+	{
+
+	}
+
 	// Update is called once per frame
 	void Update () {
 		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo>(); //myo object에 접속
@@ -224,6 +229,7 @@ public class MyShipControl : MonoBehaviour {
 	{
         if (col.transform.tag == "EnemyMissile")
         {
+			this.GetComponent<Rigidbody> ().isKinematic = true;
             Destroy(this.gameObject);
             if (isParticle == false)
             {

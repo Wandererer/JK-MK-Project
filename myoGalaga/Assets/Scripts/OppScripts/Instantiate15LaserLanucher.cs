@@ -16,15 +16,21 @@ public class Instantiate15LaserLanucher : MonoBehaviour {
 		color = this.GetComponentInChildren<MeshRenderer> ();
 
 	}
-	
+
+
+	void FixedUpdate()
+	{
+
+	}
+
 	// Update is called once per frame
 	void Update () {
 		z = this.GetComponent<Transform> ().position.z;
 
-		if (z <= 20) {
+		if (z <= 16) {
 			if (red < 40) {
 				red = color.material.color.r;
-				this.GetComponentInChildren<MeshRenderer> ().material.color = new Color (red += 0.5f, color.material.color.g, color.material.color.b);
+				this.GetComponentInChildren<MeshRenderer> ().material.color = new Color (red += 1f, color.material.color.g, color.material.color.b);
 			//	Debug.Log (red);
 			} else {
 				if (isInstantiateLaser == false) {

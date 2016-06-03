@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+using Pose = Thalmic.Myo.Pose;
+
 public enum GameState
 {
     None=0,
@@ -12,7 +15,6 @@ public enum GameState
 
 
 public class GameController : MonoBehaviour {
-
     public GameObject myo;
     public GameObject myShip;
 	public GameObject[] EnemyList;
@@ -30,6 +32,7 @@ public class GameController : MonoBehaviour {
 	public int score=0;
 	public int bomb=3; //bomb use total count;
     int semiBossCount = 0;
+	int pattern=1; 
 
 	bool isInstantiateEnemy=false;
     bool isDead = true;
@@ -38,15 +41,25 @@ public class GameController : MonoBehaviour {
 
     GameState gameState;
  
-
 	// Use this for initialization
 	void Start () {
         gameState = GameState.None;
+
 	}
+
+	void FixedUpdate()
+	{
+		ThalmicMyo thMyo = myo.GetComponent<ThalmicMyo> ();
+		Debug.Log (thMyo.pose);
+		if (thMyo.pose == Pose.WaveOut) {
+			Time.timeScale = 0;
+			Debug.Log ("asdfsadfasdf");
+		}
+	}
+
 	
 	// Update is called once per frame
 	void Update () {
-
 
         switch(gameState)
         {
@@ -83,24 +96,37 @@ public class GameController : MonoBehaviour {
 		if(instantiateTime<0  && isSemiBossTiming==false)
 			isInstantiateEnemy=false;
 
-		if (instantiateTime < 0f && isInstantiateEnemy==false) {
+		if (instantiateTime < 0f && isInstantiateEnemy==false && pattern==1) {
 			Instantiate (EnemyList [enemyInstanCount++]);
 			isInstantiateEnemy = true;
+			if (enemyInstanCount == 15) {
+				isSemiBossTiming = true;
+				instantiateTime = 15f;
+				pattern++;
+			}
 
 
-
-			 if(enemyInstanCount<5)
+			if(enemyInstanCount<5)
 			instantiateTime =3.5f;
+			
 			else if (enemyInstanCount < 12)
 				instantiateTime = 5f;
-			else 
+			else if(enemyInstanCount<=14)
 				instantiateTime = 10f;
 		}
 
-        if(enemyInstanCount==15 && isSemiBossTiming==false)
+		if(isSemiBossTiming==true&&instantiateTime<0f)
         {
             enemyInstanCount = 0;
-            isSemiBossTiming = true;
+			if (semiBossCount == 0) {
+				semiBossCount++;
+				GameObject semiBoss = Instantiate (SemiBoss1);
+				isSemiBossTiming = false;
+
+			} else {
+				GameObject semiBoss = Instantiate (SemiBoss2);
+				isSemiBossTiming = false;
+			}
         }
 
 	}
@@ -112,8 +138,10 @@ public class GameController : MonoBehaviour {
 
     void CheckMyoIsSynced()
     {
-        if (myo.GetComponent<ThalmicMyo>().armSynced == true)
-            gameState = GameState.Play;
+		if (myo.GetComponent<ThalmicMyo> ().armSynced == true)
+			gameState = GameState.Play;
+		
+
         else
         {
        //     gameState = GameState.Pause;

@@ -3,11 +3,17 @@ using System.Collections;
 
 public class Instantiate150Move : MonoBehaviour {
 	float x, y, z;
-	float moveSpeedZ = 0.8f;
-	float dissaperTime=14f;
+	float moveSpeedZ = 0.9f;
+	float dissaperTime=20f;
 	// Use this for initialization
 	void Start () {
 	
+	}
+
+
+	void FixedUpdate()
+	{
+
 	}
 	
 	// Update is called once per frame
@@ -21,7 +27,7 @@ public class Instantiate150Move : MonoBehaviour {
 			Destroy (this.gameObject);
 
 
-		if (z > 20)
+		if (z > 16)
 			this.GetComponent<Transform> ().position = new Vector3 (x, y, z -= moveSpeedZ);
 	}
 }

@@ -11,6 +11,10 @@ public class bossSimpleMissileMove : MonoBehaviour {
 	void Start () {
 	
 	}
+	void FixedUpdate()
+	{
+
+	}
 	
 	// Update is called once per frame
 	void Update () {

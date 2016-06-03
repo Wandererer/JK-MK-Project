@@ -91,9 +91,9 @@ public class SemiBoss1Move : MonoBehaviour {
 				if(isRotateWhileMoving==true)
 					isRotateWhileMoving = false;
 
-				if(rotationZ>0 && rotationZ<50)
+				if(rotationZ>0 && rotationZ<100)
 					GetComponent<Transform> ().Rotate ((new Vector3 (0, 0, -0.9f)));
-				else if(rotationZ<360 && rotationZ>310)
+				else if(rotationZ<360 && rotationZ>260)
 					GetComponent<Transform> ().Rotate ((new Vector3 (0, 0, 0.9f)));
 
                 wait1Seconds -= Time.deltaTime;

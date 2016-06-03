@@ -7,7 +7,7 @@ public class ThickLaserScript : MonoBehaviour {
 
 	public float beamRoationSpeed = 400.0f;
 	public float beamExtendSpeed = 10.0f;
-	public float zScaleFactor = 20.0f;
+	public float zScaleFactor = 40.0f;
 	public float distanceToHitPoint;
 
 	// Use this for initialization
@@ -23,10 +23,9 @@ public class ThickLaserScript : MonoBehaviour {
 		if(Physics.Raycast(transform.position,new Vector3(0,0,-1),out hit))
 		{
 
-
 			distanceToHitPoint = Vector3.Distance(transform.position, hit.point);
 
-			transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(20 , 20, (distanceToHitPoint * zScaleFactor)),
+			transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(18, 18, (distanceToHitPoint * zScaleFactor)),
 				(beamExtendSpeed * Time.deltaTime));
 
 			beamHitParticles.transform.position = hit.point;
@@ -35,7 +34,7 @@ public class ThickLaserScript : MonoBehaviour {
 		else
 		{
 			bhp.Stop();
-			transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(20, 20, transform.localScale.z),
+			transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(1, 1, transform.localScale.z),
 				(beamExtendSpeed * Time.deltaTime));
 		}
 
@@ -44,6 +43,9 @@ public class ThickLaserScript : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
+		if (other.transform.tag == "My" || other.transform.tag=="myMissile")
+			this.GetComponent<Rigidbody> ().isKinematic = true;
+
 		Debug.Log("파티클시작");
 		bhp.Play();
 	}

@@ -19,13 +19,14 @@ public class EnemyStatus : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-//        Debug.Log(hp);
+     Debug.Log(hp);
 
 	    if(hp<=0 && isParticle==false)
         {
             isParticle = true;
+			DestroyGameObject();
             controller.GetComponent<GameController>().score += score;
-            DestroyGameObject();
+
         }
 	}
 
@@ -41,8 +42,12 @@ public class EnemyStatus : MonoBehaviour {
     void OnCollisionEnter(Collision col)
     {
 		try{
-        if (col.transform.tag == "myMissile") ;
+			if (col.transform.tag == "myMissile") {
             hp -= col.gameObject.GetComponent<FireMyShipMissile>().damage;
+				this.GetComponent<Rigidbody>().isKinematic=true;
+			}
+			else
+				this.GetComponent<Rigidbody>().isKinematic=false;
 		}
 		catch(System.NullReferenceException e) {
 			//do Nothing

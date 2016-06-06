@@ -25,7 +25,7 @@ public class bossSimpleMissileMove : MonoBehaviour {
 			, z -= fireSpeed);
 		//this is moving script
 
-		if (z <=-10)
+		if (z <=-8)
 			Destroy (this.gameObject);//if z>50 destroy this object
 	}
 

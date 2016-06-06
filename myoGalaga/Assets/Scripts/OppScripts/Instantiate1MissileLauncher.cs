@@ -14,6 +14,8 @@ public class Instantiate1MissileLauncher : MonoBehaviour {
 
 	}
 
+    void FixedUpdate() { }
+
 	// Update is called once per frame
 	void Update () {
 		RaycastHit hit;

@@ -17,11 +17,15 @@ public class Instantiate50Move : MonoBehaviour {
 		y = this.GetComponent<Transform> ().position.y;
 		z = this.GetComponent<Transform> ().position.z;
 
-		if (z > 17) {
+		if (z > 17) 
 			this.GetComponent<Transform> ().position = new Vector3 (x, y, z -= moveSpeedZ);
-		} else {
+        else if(x < -17)
+            Destroy (this.gameObject);
+
+		 else {
 			this.GetComponent<Transform> ().position = new Vector3 (x-=moveSpeedX, y-=moveSpeedY, z -= moveSpeedZ);
 			GetComponent<Transform> ().Rotate ((new Vector3 (0.1f, 0.1f, 0)));
 		}
 	}
+    
 }

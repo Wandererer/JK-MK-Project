@@ -30,7 +30,18 @@ public class BombExplode : MonoBehaviour {
                 getAllEnemy[i].GetComponent<EnemyStatus>().hp -= 100;
             }
 
-                Destroy(this.gameObject);
+            GameObject[] getAllMissile = GameObject.FindGameObjectsWithTag("EnemyMissile");
+
+            for (int i = 0; i < getAllMissile.Length; i++)
+            {
+                    
+                    Destroy(getAllMissile[i]);
+ 
+            }
+
+
+
+              Destroy(this.gameObject);
 
             if (isParticle == false)
             {

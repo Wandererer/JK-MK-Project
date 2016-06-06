@@ -8,7 +8,7 @@ public class Instantiate110Move : MonoBehaviour {
 	void Start () {
 	
 	}
-	
+    void FixedUpdate() { }
 	// Update is called once per frame
 	void Update () {
 		x = this.GetComponent<Transform>().position.x;

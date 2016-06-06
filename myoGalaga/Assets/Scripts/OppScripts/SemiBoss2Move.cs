@@ -24,13 +24,24 @@ public class SemiBoss2Move : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        target = GameObject.FindGameObjectWithTag("My").GetComponent<Transform>();
+
+
         x = this.GetComponent<Transform>().position.x;
         y = this.GetComponent<Transform>().position.y;
         z = this.GetComponent<Transform>().position.z;
         rotationX = this.GetComponent<Transform>().eulerAngles.x;
         rotationX = Mathf.Round(rotationX);
         isFireLaser = this.GetComponent<SemiBoss2MissileLauncher>().isFireLaser;
+
+        try
+        {
+            target = GameObject.FindGameObjectWithTag("My").GetComponent<Transform>();
+        }
+        catch (System.Exception e)
+        {
+            this.GetComponent<SemiBoss2MissileLauncher>().isFireLaser = false;
+        }
+    
 
         if(isMove==false && wait1Seconds>0f)
         {
@@ -51,7 +62,7 @@ public class SemiBoss2Move : MonoBehaviour {
             
         }
 
-        if(z>17)
+        if(z>23)
             this.GetComponent<Transform>().position = new Vector3(x, y, z -= moveSpeedZ);
         else
         {
@@ -93,7 +104,7 @@ public class SemiBoss2Move : MonoBehaviour {
             }
             else
             {
-                this.GetComponent<Transform>().position = Vector3.MoveTowards(new Vector3(x,y,z), new Vector3(target.position.x,target.position.y,z), 0.15f);
+                this.GetComponent<Transform>().position = Vector3.MoveTowards(new Vector3(x,y,z), new Vector3(target.position.x,target.position.y-0.3f,z), 0.1f);
             }
 
         }

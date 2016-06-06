@@ -17,15 +17,18 @@ public class MyShipControl : MonoBehaviour {
 	float transparentLocalX,transparentLocalY;
 	float limitPlainX, limitPlainY; 
 	float firerate=0.2f;
+    float hommingFireRate = 1f;
 
 	bool isMyControl=true; //if exceed resolution ismycontorl=false;
     bool isParticle = false;
+    bool isBombMake = false;
 
 	float myoGryoX;
 	float myoGryoY;
 
-	public GameObject missile;
-    public GameObject missile2;
+	public GameObject Missile;
+    public GameObject Missile2;
+    public GameObject HommingMissile;
 	public GameObject transparentPlain;
 
     Transform startRotation;
@@ -33,7 +36,7 @@ public class MyShipControl : MonoBehaviour {
 
 	int bombCount;
     int direction;
-    int power=1;
+    public int power=1;
    
     [Range(0, 180)]
     public float angle;
@@ -42,7 +45,8 @@ public class MyShipControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		bombCount=controller.GetComponent<GameController>().getBombCount();
+        myo = GameObject.Find("Myo");
+        controller = GameObject.Find("GameController");
 	}
 
 	void FixedUpdate()
@@ -52,13 +56,19 @@ public class MyShipControl : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        bombCount = controller.GetComponent<GameController>().getBombCount();
 		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo>(); //myo object에 접속
 	
 
-		 myoGryoX =thalmicMyo.gyroscope.x;
-         myoGryoY= thalmicMyo.gyroscope.y;
+		myoGryoX =thalmicMyo.gyroscope.x;
+        myoGryoY= thalmicMyo.gyroscope.y;
         myoGryoX *= 0.009f;
         myoGryoY *= 0.009f;
+
+        if (myoGryoX > -0.02 && myoGryoX < 0.02)
+            myoGryoX = 0;
+
+
 
 
 
@@ -76,9 +86,10 @@ public class MyShipControl : MonoBehaviour {
 
 
 		firerate -= Time.deltaTime; //how often do you want fire pistol
-
+        hommingFireRate -= Time.deltaTime;
 
         DontExceedCameraSight();
+
 		MovelikeRealPlain ();
 
 
@@ -95,10 +106,18 @@ public class MyShipControl : MonoBehaviour {
             {
                 FireMissileP2();
             }
+
+            else if(firerate<=0 && power==3)
+            {
+                FireMissileP2();
+               if (hommingFireRate <= 0)
+                    FireHommingMissile();
+            }
 			
 		}
 
 		if (thalmicMyo.pose == Pose.WaveIn) {
+            Debug.Log("CreateBomb");
 			CreateBomb ();
 		}
 
@@ -107,38 +126,47 @@ public class MyShipControl : MonoBehaviour {
 
 	void CreateBomb()
 	{
-		GameObject obj = GameObject.Find ("Nuclear");
-		if (obj == null && bombCount>0) {
+        GameObject obj = GameObject.Find("Nuclear");
+        if (obj == null && bombCount > 0)
+        {
+            Debug.Log("FireBomb");
 			obj = Instantiate (bomb);
 			obj.name = "Nuclear";
             obj.GetComponent<Transform>().position = new Vector3(planeLocalX, planeLocalY - 1, 0);
-			controller.GetComponent<GameController> ().setBombCount (bombCount--);
+            controller.GetComponent<GameController>().bomb--;
 		}
 	}
 
     void FireMissileP1()
     {
-        GameObject Missile = Instantiate(missile); //create missile gameobjet
-        Missile.GetComponent<Transform>().position = new Vector3(planeLocalX, planeLocalY, planeLocalZ+1); //create missile object in front of z+1 from this object
+        GameObject missile = Instantiate(Missile); //create missile gameobjet
+        missile.GetComponent<Transform>().position = new Vector3(planeLocalX, planeLocalY, planeLocalZ+1); //create missile object in front of z+1 from this object
         firerate = 0.2f; //firerate initiallization
     }
     void FireMissileP2()
     {
-        GameObject Missile1 = Instantiate(missile2); //create missile gameobjet
-        GameObject Missile2 = Instantiate(missile2); //create missile gameobjet
-        Missile1.GetComponent<Transform>().position = new Vector3(planeLocalX - 0.5f, planeLocalY, planeLocalZ+1); //create missile object in front of z+1 from this object
-        Missile2.GetComponent<Transform>().position = new Vector3(planeLocalX + 0.5f, planeLocalY, planeLocalZ + 1); //create missile object in front of z+1 from this object
+        GameObject missile1 = Instantiate(Missile2); //create missile gameobjet
+        GameObject missile2 = Instantiate(Missile2); //create missile gameobjet
+        missile1.GetComponent<Transform>().position = new Vector3(planeLocalX - 0.5f, planeLocalY, planeLocalZ+1); //create missile object in front of x-0.5, z+1 from this object
+        missile2.GetComponent<Transform>().position = new Vector3(planeLocalX + 0.5f, planeLocalY, planeLocalZ + 1); //create missile object in front of x+0.5, z+1 from this object
         firerate = 0.2f; //firerate initiallization
+    }
+
+    void FireHommingMissile()
+    {
+        GameObject hommingMissile = Instantiate(HommingMissile);
+        hommingMissile.GetComponent<Transform>().position = new Vector3(planeLocalX, planeLocalY -= 1f, planeLocalZ);
+        hommingFireRate = 1f;
     }
 
     void DontExceedCameraSight()
     {
         if (limitPlainX >= 0.05f && limitPlainX <= 0.95f && limitPlainY >= 0.05f && limitPlainY <= 0.95f)
-            this.gameObject.GetComponent<Transform>().position = new Vector3(planeLocalX += (myoGryoY) * -1, planeLocalY += myoGryoX, 0);
+            this.gameObject.GetComponent<Transform>().position = new Vector3(planeLocalX += (myoGryoY) * -1, planeLocalY += myoGryoX, -3);
         else
         {
             isMyControl = false;
-            this.gameObject.GetComponent<Transform>().position = new Vector3(planeLocalX, planeLocalY, 0);
+            this.gameObject.GetComponent<Transform>().position = new Vector3(planeLocalX, planeLocalY, -3);
             AddTransparentShipObjectForPostionLimitExeed();
         }
 
@@ -152,11 +180,11 @@ public class MyShipControl : MonoBehaviour {
 			obj = Instantiate (transparentPlain);
             transparentLocalX = planeLocalX;
             transparentLocalY = planeLocalY;
-			obj.GetComponent<Transform> ().position = new Vector3 (transparentLocalX, transparentLocalY, 0);
+			obj.GetComponent<Transform> ().position = new Vector3 (transparentLocalX, transparentLocalY, -3);
 			obj.name = "TransparentPlain";
 
 		} else {
-			obj.GetComponent<Transform> ().position = new Vector3 (transparentLocalX += (myoGryoY) * -1, transparentLocalY += myoGryoX, 0);
+			obj.GetComponent<Transform> ().position = new Vector3 (transparentLocalX += (myoGryoY) * -1, transparentLocalY += myoGryoX, -3);
 			Vector3 screenPositionTransparent = Camera.main.WorldToViewportPoint (obj.GetComponent<Transform> ().position); 
 			objLimitX = screenPositionTransparent.x;
 			objLimitY = screenPositionTransparent.y;
@@ -166,7 +194,7 @@ public class MyShipControl : MonoBehaviour {
 				//Debug.Log ("범위안에 들어와");
                 planeLocalX = transparentLocalX;
                 planeLocalY = transparentLocalY;
-                this.gameObject.GetComponent<Transform>().position = new Vector3(planeLocalX += (myoGryoY) * -1, planeLocalY += myoGryoX, 0);
+                this.gameObject.GetComponent<Transform>().position = new Vector3(planeLocalX += (myoGryoY) * -1, planeLocalY += myoGryoX, -3);
 				//Debug.Log (limitPlainY + "  " + limitPlainY);
 
 				isMyControl = true;
@@ -215,20 +243,14 @@ public class MyShipControl : MonoBehaviour {
 				GetComponent<Transform> ().Rotate ((new Vector3 (0, -1, 0)) * Time.deltaTime * 200f);
 				
 			}
-
-		
-
-		
 		} 
-
-
-
 	}
 
 	void OnCollisionEnter (Collision col)
 	{
-        if (col.transform.tag == "EnemyMissile")
+        if (col.transform.tag == "EnemyMissile" || col.transform.tag=="EnemyLaser")
         {
+            GameObject.Find("GameController").GetComponent<GameController>().isDead = true;
 			this.GetComponent<Rigidbody> ().isKinematic = true;
             Destroy(this.gameObject);
             if (isParticle == false)

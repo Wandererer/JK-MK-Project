@@ -22,7 +22,7 @@ public class SemiBoss1MissileLauncher : MonoBehaviour {
 	void Start () {
 	
 	}
-	
+    void FixedUpdate() { }
 	// Update is called once per frame
 	void Update () {
 		waitSeconds = this.GetComponent<Transform> ().GetComponent<SemiBoss1Move> ().wait1Seconds;

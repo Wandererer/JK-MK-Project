@@ -51,8 +51,8 @@ public class ChoperHommingMissile : MonoBehaviour {
 		}
 	
 	//	Debug.Log (targetPosition + " sdfasdfsadf");
-		if (isStartHoming == true) {
-			if (z > 5) {
+		else {
+			if (z >5) {
 				float diff = (targetPosition - transform.position).sqrMagnitude;
 				//Debug.Log (diff);
 				if (isHoming) {

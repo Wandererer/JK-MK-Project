@@ -46,7 +46,7 @@ public class ThickLaserScript : MonoBehaviour {
 		if (other.transform.tag == "My" || other.transform.tag=="myMissile")
 			this.GetComponent<Rigidbody> ().isKinematic = true;
 
-		Debug.Log("파티클시작");
+
 		bhp.Play();
 	}
 

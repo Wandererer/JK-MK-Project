@@ -16,11 +16,15 @@ public class SemiBoss1Move : MonoBehaviour {
     int fourDimension = 0;
 	int previousDimension=-1;
 
+    int hp;
+
+    public GameObject PowerItem;
+
 	// Use this for initialization
 	void Start () {
 	
 	}
-	
+    void FixedUpdate() { }
 	// Update is called once per frame
 	void Update () {
 		distanceContinue=Vector3.Distance (new Vector3 (x, y, z), new Vector3 (moveToX, moveToY, z));
@@ -35,8 +39,6 @@ public class SemiBoss1Move : MonoBehaviour {
 
         if(z>17)
             this.GetComponent<Transform>().position = new Vector3(x, y, z -= moveSpeedZ);
-
-
 
 
         else
@@ -113,6 +115,7 @@ public class SemiBoss1Move : MonoBehaviour {
 
         
 	}
+
 
     void ChooseFourDimension()
     {

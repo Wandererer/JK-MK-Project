@@ -3,9 +3,6 @@ using System.Collections;
 
 public class BossMissileLauncher : MonoBehaviour {
 
-	public GameObject simpleMissileLauncher1;
-	public GameObject simpleMissileLauncher2;
-
 	public GameObject simpleMissile;
 	public GameObject homingMissile;
 
@@ -27,61 +24,120 @@ public class BossMissileLauncher : MonoBehaviour {
     public GameObject[] laserLauncerMatrix;
     public GameObject[] laserObject;
 
-	bool isFireMissile=false;
-	bool isFireLaser=false;
-
-	bool isHomingFire=true;
-
-
+	bool isFireMissile=true;
+	public bool isFireLaser=true;
+	bool isHomingFire=false;
 
     bool isInstantiateLaserObject = false;
-   
+    bool isDifficultUp1 = false;
+    bool isDifficultUp2 = false;
+    bool isStart;
 
+    float fixFireRate = 0.7f;
+    float fixHommingFireRate = 0.5f;
+    float fixChangePatternTime = 6.0f;
 	float firerate=0.7f;
 	float homingFireRate=0.5f;
 	float changeSimplePatternTime=-1f;
+    float laserTime = 6f;
+    float maxHp;
+    float currentHp;
+    float hpRate;
+
+
 
 	int homingCount=0;
     int laserObjectCount = 0;
+    int fireCount = 0;
+
+    ArrayList destroyArray;
 
 	// Use this for initialization
 	void Start () {
 		selectSimpleMissilePattern ();
 		previousPattern = sPatternNum;
+        maxHp = GetComponent<EnemyStatus>().hp;
+        destroyArray = new ArrayList();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		firerate -= Time.deltaTime;
-		changeSimplePatternTime -= Time.deltaTime;
-
-		if (changeSimplePatternTime < 0f) {
-			previousPattern = sPatternNum;
-			selectSimpleMissilePattern ();
-			ChangePatternIfPastPatternSame ();
-			changeSimplePatternTime = 6f;
-		}
+        isStart = this.GetComponent<BossMovement>().isStart;
 
 
-		if (isFireMissile == true) {
-            BossSimpleMissileFire();
-		}
 
-
-		if (isHomingFire == true)
-		{
-
-            BossHommingMissileFire();
-		}
-
-        if(isFireLaser ==true)
+        currentHp = GetComponent<EnemyStatus>().hp;
+        hpRate = currentHp / maxHp;
+        if (isStart == false)
         {
-            BossFireLaser();
+            firerate -= Time.deltaTime;
+            changeSimplePatternTime -= Time.deltaTime;
+
+
+
+            MoveSpeedAndFireRateUpByHP();
+            ChangeMissilePatternByCount();
+
+
+            if (changeSimplePatternTime < 0f)
+            {
+                previousPattern = sPatternNum;
+                selectSimpleMissilePattern();
+                ChangePatternIfPastPatternSame();
+                changeSimplePatternTime = fixChangePatternTime;
+                fireCount++;
+            }
+
+
+            if (isFireMissile == true)
+            {
+                BossSimpleMissileFire();
+            }
+
+
+            if (isHomingFire == true)
+            {
+
+                BossHommingMissileFire();
+            }
+
+            if (isFireLaser == true)
+            {
+                laserTime -= Time.deltaTime;
+                CheckLaserTime();
+                BossFireLaser();
+            }
+            else
+            {
+                DestroyLaser();
+            }
+
         }
 
 
-
 	}
+
+    void ChangeMissilePatternByCount()
+    {
+        if (fireCount == 2 || fireCount == 5)
+            isHomingFire = true;
+
+        else if(fireCount==7 && isFireLaser==false)
+        {
+            isFireLaser = true;
+        }
+    }
+
+    void CheckLaserTime()
+    {
+        if(laserTime<=0f)
+        {
+            isFireLaser = false;
+            laserTime = 6f;
+            fireCount = 0;
+        }
+    }
+    
 
     void BossSimpleMissileFire()
     {
@@ -100,7 +156,30 @@ public class BossMissileLauncher : MonoBehaviour {
 
             }
 
-            firerate = 0.7f;
+            firerate = fixFireRate;
+        }
+    }
+
+    void MoveSpeedAndFireRateUpByHP()
+    {
+        if (hpRate < 0.6 && isDifficultUp1==false)
+        {
+            isDifficultUp1 = true;
+            this.GetComponent<BossMovement>().bossMoveSpeed += 0.1f;
+            fixFireRate -= 0.1f;
+            fixHommingFireRate -= 0.1f;
+            fixChangePatternTime -= 1f;
+            laserObjectCount++;
+        }
+
+        else if(hpRate<0.3&&isDifficultUp2==false)
+        {
+            isDifficultUp2 = true;
+            this.GetComponent<BossMovement>().bossMoveSpeed += 0.1f;
+            fixFireRate -= 0.1f;
+            fixChangePatternTime -= 0.1f;
+            fixHommingFireRate -= 0.1f;
+            laserObjectCount++;
         }
     }
 
@@ -118,18 +197,18 @@ public class BossMissileLauncher : MonoBehaviour {
             hommingMissileLauncherMatrix[homingCount].GetComponent<Transform>().position.y,
             hommingMissileLauncherMatrix[homingCount].GetComponent<Transform>().position.z);
             homingCount++;
-            homingFireRate = 0.5f;
+            homingFireRate = fixHommingFireRate;
+
+
         }
-
-
 
         if (homingCount == 8)
         {
-
             homingCount = 0;
             isHomingFire = false;
-
+            fireCount++;
         }
+       
     }
 
     void BossFireLaser()
@@ -138,7 +217,7 @@ public class BossMissileLauncher : MonoBehaviour {
         {
             for(int i=0;i<laserLauncerMatrix.Length;i++)
             {
-                GameObject Laser = Instantiate(laserObject[i]);
+                GameObject Laser = Instantiate(laserObject[laserObjectCount]);
                 Laser.name = "Laser" + (i+1);
                 Laser.GetComponent<Transform>().position = new Vector3(
                     laserLauncerMatrix[i].GetComponent<Transform>().position.x,
@@ -147,21 +226,34 @@ public class BossMissileLauncher : MonoBehaviour {
                );
 
                 Laser.GetComponent<Transform>().parent = laserLauncerMatrix[i].GetComponent<Transform>();
-                
-                
-                laserObjectCount++;
+                destroyArray.Add(Laser.name);
 
             }
 
-            if (laserObjectCount == 2)
-                isInstantiateLaserObject = true;
+            isInstantiateLaserObject = true;
         }
-
 
         
     }
 
 
+    void DestroyLaser()
+    {
+        if (isInstantiateLaserObject == true)
+        {
+            foreach (string obj in destroyArray)
+            {
+                Destroy(GameObject.Find(obj));
+            }
+
+            isInstantiateLaserObject = false;
+        }
+    }
+
+    void SetIsFireMissileFalse()
+    {
+        isFireMissile = false;
+    }
 
 	void selectSimpleMissilePattern()
 	{

@@ -7,6 +7,7 @@ public class FireMyShipMissile : MonoBehaviour {
 	float fireSpeed=0.5f; //missile speed
     public int damage;
     bool isParticle = false;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -24,7 +25,7 @@ public class FireMyShipMissile : MonoBehaviour {
 		                                                        , z += fireSpeed);
 		//this is moving script
 
-        if (z >= 20)
+        if (z >= 70)
         {
             Destroy(this.gameObject);//if z>50 destroy this object 
         }

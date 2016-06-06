@@ -19,7 +19,7 @@ public class EnemyStatus : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-     Debug.Log(hp);
+   // Debug.Log(hp);
 
 	    if(hp<=0 && isParticle==false)
         {
@@ -32,6 +32,28 @@ public class EnemyStatus : MonoBehaviour {
 
     void DestroyGameObject()
     {
+        if (this.transform.name== "SemiBoss1")
+        {
+            GameObject item = this.GetComponent<SemiBoss1Move>().PowerItem;
+            GameObject.Find("GameController").GetComponent<GameController>().isSemiBoss1Die = true;
+            Instantiate(item);
+            item.name = "Power";
+            item.GetComponent<Transform>().position = new Vector3(
+                Random.Range(-6, 6), Random.Range(-2, 5), -3
+            );   
+        }
+        else if (this.transform.name == "SemiBoss2")
+        {
+         //   GameObject item = this.GetComponent<SemiBoss2Move>().PowerItem;
+            controller.GetComponent<GameController>().isSemiBoss2Die = true;
+         //   item.name = "Power";
+        //    item.GetComponent<Transform>().position = new Vector3(     Random.Range(-6, 6), Random.Range(-2, 5), -3   );
+        }
+        else if(this.transform.name=="Boss")
+        {
+            GameObject.Find("GameController").GetComponent<GameController>().gameState = GameState.Win;
+        }
+
         GameObject particle = Instantiate(particleObject);
         particle.GetComponent<Transform>().position = new Vector3(this.gameObject.GetComponent<Transform>().position.x,
             this.gameObject.GetComponent<Transform>().position.y,
@@ -42,12 +64,22 @@ public class EnemyStatus : MonoBehaviour {
     void OnCollisionEnter(Collision col)
     {
 		try{
-			if (col.transform.tag == "myMissile") {
-            hp -= col.gameObject.GetComponent<FireMyShipMissile>().damage;
-				this.GetComponent<Rigidbody>().isKinematic=true;
+            if (col.transform.tag == "myMissile" || col.transform.tag == "myHomming")
+            {
+                this.GetComponent<Rigidbody>().isKinematic = true;
+
+                if (col.transform.tag == "myMissile")
+                         hp -= col.gameObject.GetComponent<FireMyShipMissile>().damage;
+                else if (col.transform.tag == "myHomming")
+                {
+                    hp -= col.gameObject.GetComponent<MyHommingMissile>().damage;
+                }
+
+
+	
 			}
-			else
-				this.GetComponent<Rigidbody>().isKinematic=false;
+	//		else
+			//	this.GetComponent<Rigidbody>().isKinematic=false;
 		}
 		catch(System.NullReferenceException e) {
 			//do Nothing

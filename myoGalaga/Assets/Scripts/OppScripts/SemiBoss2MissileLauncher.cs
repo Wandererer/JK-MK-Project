@@ -30,10 +30,26 @@ public class SemiBoss2MissileLauncher : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         z = this.GetComponent<SemiBoss2Move>().z;
-        if (z < 17)
+
+        if (z < 23)
         {
-            if(isFireLaser==false)
+
+            if (isFireLaser == true)
+            {
+                FireLaser();
+                laserFire5Seconds -= Time.deltaTime;
+            }
+
+            else
+            {
                 fireRate -= Time.deltaTime;
+
+                GameObject laser = GameObject.Find("laser");
+                if (laser != null)
+                {
+                    Destroy(laser);
+                }
+            }
 
             if (fireCount == 5 &&fireRate<0)
                 isFireLaser = true;
@@ -53,11 +69,9 @@ public class SemiBoss2MissileLauncher : MonoBehaviour {
 
 
 
-            if(isFireLaser==true)
-            {
-                FireLaser();
-                laserFire5Seconds -= Time.deltaTime;
-            }
+  
+
+
 
             if (laserFire5Seconds < 0f)
             {

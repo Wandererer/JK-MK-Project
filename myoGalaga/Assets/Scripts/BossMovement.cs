@@ -3,14 +3,14 @@ using System.Collections;
 
 public class BossMovement : MonoBehaviour {
 
-	int[] bossMoveX ={-16,0,16}; //boss move X
-	int[] bossMoveY = { -8, 0,8};//boss move y
+	float[] bossMoveX ={-14,0,14}; //boss move X
+	float[] bossMoveY = { -6, 0,6};//boss move y
 
 	public int selectX; //bossmoveselect x position
 	public int selectY;//boss move select y position
 
-	int tempX;
-	int tempY;
+	float tempX;
+	float tempY;
 
 	float bossCurrentX;
 	float bossCurrentY;
@@ -19,181 +19,107 @@ public class BossMovement : MonoBehaviour {
 	float findLocationX;
 	float findLocationY;
 
-	float bossMoveSpeed=0.1f;
-
-	float moveMountX=0.1f;
-	float moveMountY=0.1f;
+	public float bossMoveSpeed=0.1f;
 
 	float stopMoving=2f;
 
 	bool isMoveFinish = true;
 	bool isFindLocation=true;
+    bool isFireLaser;
+    public bool isStart = true;
+
+    Transform target;
 
 	// Use this for initialization
 	void Start () {
-		bossCurrentX = GetComponent<Transform> ().position.x;
-		bossCurrentY = GetComponent<Transform> ().position.y;
-		bossCurrentZ = GetComponent<Transform> ().position.z;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        try
+        {
 
+
+            target = GameObject.FindGameObjectWithTag("My").GetComponent<Transform>();
+        }
+        catch(System.Exception e)
+        {
+            isFireLaser = false;
+        }
+        isFireLaser = this.GetComponent<BossMissileLauncher>().isFireLaser;
 		bossCurrentX = GetComponent<Transform> ().position.x;
 		bossCurrentY = GetComponent<Transform> ().position.y;
 		bossCurrentZ = GetComponent<Transform> ().position.z;
-		
-		if (isMoveFinish == true) {
-			if (stopMoving < 0) {
-				setMoveMountAgain ();
+        if(isStart==true)
+        {
+            this.GetComponent<Transform>().position = Vector3.MoveTowards(this.GetComponent<Transform>().position, new Vector3(0,0, 60), bossMoveSpeed);
 
-				selectMoveXY ();
+            if (bossCurrentX == 0 && bossCurrentY == 0)
+                isStart = false;
+        }
 
-				tempX = selectX;
-				tempY = selectY;
-		
+        else
+        {
 
-				while (tempX == selectX && tempY == selectY) {
-					tempX = selectX;
-					tempY = selectY;
-					selectMoveXY (); //don't move same position
-				}
+            if (isMoveFinish == true)
+            {
+                SelectAgainForMove();
+                stopMoving -= Time.deltaTime;
+            }
+            else if(isFireLaser==true)
+            {
+                this.GetComponent<Transform>().position = Vector3.MoveTowards(this.GetComponent<Transform>().position, new Vector3(target.position.x, target.position.y, 60), 0.15f);
+            }
 
-				isMoveFinish = false;
+            else if (isMoveFinish == false)
+            {
+                BossMoveAndCheck();
 
-				if (isFindLocation) {
-					findLocationX = bossMoveX [selectX] - bossCurrentX;
-					findLocationY = bossMoveY [selectY] - bossCurrentY;
-					Debug.Log (findLocationX + " " + findLocationY + "test");
-					isFindLocation = false;
-				}
-
-				if (bossMoveX [selectX] < 0)
-					moveMountX *= -1;
-				if (bossMoveY [selectY] < 0)
-					moveMountY *= -1; 
-				Debug.Log (bossMoveX [selectX] + "  " + bossMoveY [selectY] + " 갈곳");
-				stopMoving = 2f;
-			}
-			stopMoving -= Time.deltaTime;
-		}
-			
-	
-		if (isMoveFinish == false) {
-
-
-			checkXMove ();
-			checkYMove ();
-
-				this.GetComponent<Transform> ().position = 
-				new Vector3 (bossCurrentX += moveMountX, 
-					bossCurrentY += moveMountY,
-					bossCurrentZ);
-			
-			if (moveMountX == 0 && moveMountY == 0) {
-				isMoveFinish = true;
-				isFindLocation = true;
-			}
-		}
+            }
+        }
 	}
 
-	void checkPositiveXLimit()
-	{
-		if (bossMoveX [selectX] < bossCurrentX){
-			moveMountX = 0;
-		}
-	}
-	
-	void ifXisZero()
-	{
-		moveMountX = 0;			
-	}
+    void BossMoveAndCheck()
+    {
+        this.GetComponent<Transform>().position = Vector3.MoveTowards(this.GetComponent<Transform>().position, new Vector3(bossMoveX[selectX], bossMoveY[selectY], 60), bossMoveSpeed);
+        if (bossCurrentX == bossMoveX[selectX] && bossCurrentY == bossMoveY[selectY])
+        {
+            isMoveFinish = true;
+        }
+    }
 
-	void checkNegativeXLimit()
-	{
-		if (bossMoveX [selectX] > bossCurrentX)
-		{
-				moveMountX = 0;
-		} 
-	}
+    void SelectAgainForMove()
+    {
+        if (stopMoving < 0)
+        {
 
-				void ifYisZero()
-				{
-					moveMountY = 0;			
-				}
+            selectMoveXY();
+
+            tempX = selectX;
+            tempY = selectY;
 
 
-	void checkPositiveYLimit()
-	{
-		if (bossMoveY [selectY] < bossCurrentY) {
+            while (tempX == selectX && tempY == selectY)
+            {
+                tempX = selectX;
+                tempY = selectY;
+                selectMoveXY(); //don't move same position
+            }
 
-			moveMountY = 0;
-		}
-	}
-
-	void checkNegativeYLimit()
-	{
-		if (bossMoveY [selectY] > bossCurrentY) {
-				moveMountY = 0;
-
-		}
-	}
-
-	void checkXMove()
-	{
-		if (bossMoveX [selectX] == Mathf.Round (bossCurrentX)) {
-			moveMountX = 0;
-
-			return;
-		}
-		if (bossMoveX [selectX] > bossCurrentX) {
-			if (moveMountX < 0)
-				moveMountX *= -1;
-		} else {
-			if (moveMountX > 0)
-				moveMountX *= -1;
-		}
+            isMoveFinish = false;
 
 
-	}
+            stopMoving = 2f;
+        }
+    }
 
-	void checkYMove()
-	{
-		if (bossMoveY [selectY] == Mathf.Round (bossCurrentY)) {
-			moveMountY = 0;
-
-			return;
-		}
-		if (bossMoveY [selectY] > bossCurrentY) {
-			if (moveMountY < 0)
-				moveMountY *= -1;
-		} else {
-			if (moveMountY > 0)
-				moveMountY *= -1;
-		}
-	}
-
-	public void selectMoveXY()
+	 void selectMoveXY()
 	{
 		selectX = Random.Range (0, 3);
 		selectY = Random.Range (0, 3);
 	}
 
-	public void setIsMoveFinish(bool isTrue)
-	{
-		isMoveFinish = isTrue;
-	}
 
-	public void setBossMoveSpeed(float speed)
-	{
-		bossMoveSpeed = speed;
 
-	}
-
-	public void setMoveMountAgain()
-	{
-		moveMountX = bossMoveSpeed;
-		moveMountY = bossMoveSpeed;
-	}
 
 }

@@ -13,7 +13,7 @@ public class HomigMissile : MonoBehaviour {
         homingMissile = this.GetComponent<Rigidbody>();
      
 	}
-	
+    void FixedUpdate() { }
 	// Update is called once per frame
 	void Update () {
 		float x = transform.position.x;
@@ -31,7 +31,7 @@ public class HomigMissile : MonoBehaviour {
         try {
             target = GameObject.FindGameObjectWithTag("My").GetComponent<Transform>();
             float diff= (target.position - transform.position).sqrMagnitude;
-			Debug.Log(diff);
+			//Debug.Log(diff);
 
            if (isHoming)
            {
@@ -61,7 +61,7 @@ public class HomigMissile : MonoBehaviour {
 
 
 		//Debug.Log (diff);
-        if (z < -10)
+        if (z < -8)
             Destroy(this.gameObject);
 	
 	}

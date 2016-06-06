@@ -23,7 +23,6 @@ public class LaserScript : MonoBehaviour {
 
         if(Physics.Raycast(transform.position,new Vector3(0,0,-1),out hit))
         {
-           
 
             distanceToHitPoint = Vector3.Distance(transform.position, hit.point);
 
@@ -45,7 +44,9 @@ public class LaserScript : MonoBehaviour {
 
         void OnTriggerEnter(Collider other)
         {
-            Debug.Log("파티클시작");
+            if (other.transform.tag == "My" || other.transform.tag == "myMissile")
+                this.GetComponent<Rigidbody>().isKinematic = true;
+
             bhp.Play();
         }
 	

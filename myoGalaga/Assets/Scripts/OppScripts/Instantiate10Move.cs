@@ -10,6 +10,8 @@ public class Instantiate10Move : MonoBehaviour {
 
 	}
 
+    void FixedUpdate() { }
+
 	// Update is called once per frame
 	void Update () {
 		

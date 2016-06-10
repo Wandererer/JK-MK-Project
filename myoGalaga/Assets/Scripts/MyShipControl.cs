@@ -9,7 +9,7 @@ using VibrationType = Thalmic.Myo.VibrationType;
 public class MyShipControl : MonoBehaviour {
 	public GameObject myo;
 	public GameObject bomb;
-	public GameObject controller;
+	public GameObject controller;// GameController
     public GameObject DestroyParticle;
 
 	float planeLocalX, planeLocalY,planeLocalZ;
@@ -20,8 +20,9 @@ public class MyShipControl : MonoBehaviour {
     float hommingFireRate = 1f;
 
 	bool isMyControl=true; //if exceed resolution ismycontorl=false;
-    bool isParticle = false;
+    bool isParticle = false; 
     bool isBombMake = false;
+    public bool isFireOk = true;
 
 	float myoGryoX;
 	float myoGryoY;
@@ -30,9 +31,6 @@ public class MyShipControl : MonoBehaviour {
     public GameObject Missile2;
     public GameObject HommingMissile;
 	public GameObject transparentPlain;
-
-    Transform startRotation;
-    Transform destinationRotation;
 
 	int bombCount;
     int direction;
@@ -66,14 +64,9 @@ public class MyShipControl : MonoBehaviour {
         myoGryoY *= 0.009f;
 
         if (myoGryoX > -0.02 && myoGryoX < 0.02)
-            myoGryoX = 0;
+            myoGryoX = 0; //Normalizatoin without this code my plane goes down it self
 
-
-
-
-
-
-		Vector3 screenPosition = Camera.main.WorldToViewportPoint (this.GetComponent<Transform> ().position); 
+		Vector3 screenPosition = Camera.main.WorldToViewportPoint (this.GetComponent<Transform> ().position); //know this code that my plane doesn't exeed screen
 
 		if (isMyControl == true) {
 			limitPlainX = screenPosition.x;
@@ -85,18 +78,19 @@ public class MyShipControl : MonoBehaviour {
         planeLocalZ = this.gameObject.GetComponent<Transform>().position.z;
 
 
-		firerate -= Time.deltaTime; //how often do you want fire pistol
-        hommingFireRate -= Time.deltaTime;
+		firerate -= Time.deltaTime; //how often do you want fire missile
+        hommingFireRate -= Time.deltaTime;//how often do you want fire hommingmissile
 
         DontExceedCameraSight();
 
 		MovelikeRealPlain ();
 
 
-		//change transform this space ship
+        //change transform this space ship
 
-		if (thalmicMyo.pose == Pose.Fist) { //if your gesture is fist then fire
-			if(firerate<=0 && power==1)
+        if (thalmicMyo.pose == Pose.Fist && isFireOk==true)//if your gesture is fist then fire
+        { 
+            if (firerate<=0 && power==1)
 			{
 				//add fire sound later
                 FireMissileP1();
@@ -116,8 +110,8 @@ public class MyShipControl : MonoBehaviour {
 			
 		}
 
-		if (thalmicMyo.pose == Pose.WaveIn) {
-            Debug.Log("CreateBomb");
+        else if (thalmicMyo.pose == Pose.WaveIn && isFireOk == true) //if your gesture is wavein then fire
+         { 
 			CreateBomb ();
 		}
 
@@ -127,7 +121,7 @@ public class MyShipControl : MonoBehaviour {
 	void CreateBomb()
 	{
         GameObject obj = GameObject.Find("Nuclear");
-        if (obj == null && bombCount > 0)
+        if (obj == null && bombCount > 0 && isFireOk==true)
         {
             Debug.Log("FireBomb");
 			obj = Instantiate (bomb);
@@ -174,6 +168,7 @@ public class MyShipControl : MonoBehaviour {
 
 	void AddTransparentShipObjectForPostionLimitExeed()
 	{
+        //When you exeed screen make transparent Object
 		float objLimitX, objLimitY;
 		GameObject obj = GameObject.Find ("TransparentPlain");
 		if (obj == null) {
@@ -191,7 +186,7 @@ public class MyShipControl : MonoBehaviour {
 			//Debug.Log (objLimitX + "   " + objLimitY);
 
 			if (objLimitX >= 0.05f && objLimitX <= 0.95f && objLimitY >= 0.05f && objLimitY <= 0.95f) {
-				//Debug.Log ("범위안에 들어와");
+                //if transparent Obejct in screen position then change control to my plane
                 planeLocalX = transparentLocalX;
                 planeLocalY = transparentLocalY;
                 this.gameObject.GetComponent<Transform>().position = new Vector3(planeLocalX += (myoGryoY) * -1, planeLocalY += myoGryoX, -3);
@@ -206,6 +201,7 @@ public class MyShipControl : MonoBehaviour {
 
 	void MovelikeRealPlain()
 	{
+        //this make move like real
 		//Debug.Log (myoGryoX * 1000);
 
 		//Debug.Log (myoGryoY * 1000);

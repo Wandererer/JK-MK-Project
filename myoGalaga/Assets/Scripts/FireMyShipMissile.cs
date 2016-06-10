@@ -24,10 +24,20 @@ public class FireMyShipMissile : MonoBehaviour {
 		                                                        this.GetComponent<Transform> ().position.y
 		                                                        , z += fireSpeed);
 		//this is moving script
-
-        if (z >= 70)
+        if (GameObject.Find("GameController").GetComponent<GameController>().gameState == GameState.Boss)
         {
-            Destroy(this.gameObject);//if z>50 destroy this object 
+
+            if (z >= 70)
+            {
+                Destroy(this.gameObject);//if z>50 destroy this object 
+            }
+        }
+        else
+        {
+            if (z >= 16)
+            {
+                Destroy(this.gameObject);//if z>50 destroy this object 
+            }
         }
 	}
 

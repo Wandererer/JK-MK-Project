@@ -70,6 +70,7 @@ public class PowerItemMove : MonoBehaviour {
     {
         if(col.transform.tag=="My")
         {
+            this.GetComponent<Rigidbody>().isKinematic = true;
             col.transform.GetComponent<MyShipControl>().power++;
             Destroy(this.gameObject);
         }

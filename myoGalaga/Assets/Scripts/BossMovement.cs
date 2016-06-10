@@ -53,9 +53,13 @@ public class BossMovement : MonoBehaviour {
         if(isStart==true)
         {
             this.GetComponent<Transform>().position = Vector3.MoveTowards(this.GetComponent<Transform>().position, new Vector3(0,0, 60), bossMoveSpeed);
+            GameObject.Find("MyShip").GetComponent<MyShipControl>().isFireOk = false;
 
             if (bossCurrentX == 0 && bossCurrentY == 0)
+            {
                 isStart = false;
+                GameObject.Find("MyShip").GetComponent<MyShipControl>().isFireOk = true;
+            }
         }
 
         else
@@ -68,7 +72,15 @@ public class BossMovement : MonoBehaviour {
             }
             else if(isFireLaser==true)
             {
-                this.GetComponent<Transform>().position = Vector3.MoveTowards(this.GetComponent<Transform>().position, new Vector3(target.position.x, target.position.y, 60), 0.15f);
+                try
+                {
+                    this.GetComponent<Transform>().position = Vector3.MoveTowards(this.GetComponent<Transform>().position, new Vector3(target.position.x, target.position.y, 60), 0.15f);
+                }
+
+                catch(System.Exception e)
+                {
+
+                }
             }
 
             else if (isMoveFinish == false)

@@ -34,20 +34,31 @@ public class EnemyStatus : MonoBehaviour {
     {
         if (this.transform.name== "SemiBoss1")
         {
-            GameObject item = this.GetComponent<SemiBoss1Move>().PowerItem;
+            GameObject Poweritem = this.GetComponent<SemiBoss1Move>().PowerItem;
             GameObject.Find("GameController").GetComponent<GameController>().isSemiBoss1Die = true;
-            Instantiate(item);
-            item.name = "Power";
-            item.GetComponent<Transform>().position = new Vector3(
+            Instantiate(Poweritem);
+            Poweritem.name = "Power";
+            Poweritem.GetComponent<Transform>().position = new Vector3(
                 Random.Range(-6, 6), Random.Range(-2, 5), -3
             );   
         }
         else if (this.transform.name == "SemiBoss2")
         {
-         //   GameObject item = this.GetComponent<SemiBoss2Move>().PowerItem;
+
+            GameObject Poweritem = this.GetComponent<SemiBoss2Move>().PowerItem;
             controller.GetComponent<GameController>().isSemiBoss2Die = true;
-         //   item.name = "Power";
-        //    item.GetComponent<Transform>().position = new Vector3(     Random.Range(-6, 6), Random.Range(-2, 5), -3   );
+            Instantiate(Poweritem);
+            Poweritem.name = "Power";
+            Poweritem.GetComponent<Transform>().position = new Vector3(
+                Random.Range(-6, 6), Random.Range(-2, 5), -3
+            );
+
+            GameObject BombItem = this.GetComponent<SemiBoss2Move>().BombItem;
+            Instantiate(BombItem);
+            BombItem.name = "Bomb";
+            BombItem.GetComponent<Transform>().position = new Vector3(
+                Random.Range(-6, 6), Random.Range(-2, 5), -3
+            );
         }
         else if(this.transform.name=="Boss")
         {

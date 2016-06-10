@@ -16,6 +16,8 @@ public class SemiBoss2Move : MonoBehaviour {
     float wait1Seconds = 1f;
 
     Transform target;
+    public GameObject PowerItem;
+    public GameObject BombItem;
 
 	// Use this for initialization
 	void Start () {

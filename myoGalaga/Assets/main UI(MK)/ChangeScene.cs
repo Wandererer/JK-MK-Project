@@ -16,8 +16,7 @@ public class ChangeScene : MonoBehaviour {
 
 	public void ChangeToScene (string sceneToChangeTo)
     {
-        //DontDestroyOnLoad("PlayGameScene");
-        //  Application.LoadLevel("PlayGameScene");
+
         SceneManager.LoadScene(1);
     }
 

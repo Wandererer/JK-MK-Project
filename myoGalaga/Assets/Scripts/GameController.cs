@@ -117,12 +117,13 @@ public class GameController : MonoBehaviour {
                 break;
 
             case GameState.GameOver:
+                SaveScore();
                 sceneChangeTime -= Time.deltaTime;
                 SceneChange();
                 break;
 
             case GameState.Win:
-  
+                SaveScore();
                 sceneChangeTime -= Time.deltaTime;
                 SceneChange();
                 break;
@@ -132,6 +133,11 @@ public class GameController : MonoBehaviour {
         }
 
 	}
+
+    void SaveScore()
+    {
+        PlayerPrefs.SetInt("score", score);
+    }
 
 
     void OnGUI()

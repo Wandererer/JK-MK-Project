@@ -25,7 +25,11 @@ public class PauseScript : MonoBehaviour {
         // F10키를 눌렀을 경우
         if (Input.GetKeyDown(KeyCode.F10))
         {
-            Time.timeScale = 0;
+            if (Time.timeScale == 1)
+                Time.timeScale = 0;
+            else if(Time.timeScale == 0)
+                Time.timeScale = 1;
+
             Creat_PauseMenu();
         }
 
@@ -50,6 +54,7 @@ public class PauseScript : MonoBehaviour {
 
     public void NewGame()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(1);
     }
 
